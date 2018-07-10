@@ -1,0 +1,10 @@
+Lmod has detected the following error: These module(s) exist but cannot be
+loaded as requested: "gcc/6.1.0-fasrc01", "openmpi/2.0.1-fasrc01"
+   Try: "module spider gcc/6.1.0-fasrc01 openmpi/2.0.1-fasrc01" to see how to
+load the module(s).
+
+
+
+slurmstepd: error: Job 44481579 exceeded memory limit (30732960 > 30720000), being killed
+slurmstepd: error: Exceeded job memory limit
+slurmstepd: error: *** JOB 44481579 ON holy2a18307 CANCELLED AT 2018-05-25T03:25:28 ***

@@ -1,0 +1,7 @@
+Lmod has detected the following error: These module(s) exist but cannot be
+loaded as requested: "gcc/6.1.0-fasrc01", "openmpi/2.0.1-fasrc01"
+   Try: "module spider gcc/6.1.0-fasrc01 openmpi/2.0.1-fasrc01" to see how to
+load the module(s).
+
+
+
