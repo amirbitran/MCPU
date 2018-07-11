@@ -1443,19 +1443,49 @@ void SetProgramOptions(int argc, char *argv[]) {
   	exit(0);
   }
   
+  /*
+  Alright bro; here's the deal
+  The temperatures and setpoints will be assigned as follows:
+  
+  Suppose nodes_per_temp=5, contacts_max=300, contacts_step=10, mc_temp_min=0.1, temp_step=0.1, and n_procs=20
+  Then the temperautre assignments will be as follows
+  
+  	Cnode[0]=300, Tnode[0]=0.100000                                                                 
+	Cnode[1]=290, Tnode[1]=0.100000                                                                 
+	Cnode[2]=280, Tnode[2]=0.100000                                                                 
+	Cnode[3]=270, Tnode[3]=0.100000                                                                 
+	Cnode[4]=260, Tnode[4]=0.100000                                                                 
+	Cnode[5]=300, Tnode[5]=0.200000  
+	Cnode[6]=290, Tnode[6]=0.20000
+	....
+	...
+	...
+	Cnode[15]=300, Tnode[15]=0.400000                                                               
+	Cnode[16]=290, Tnode[16]=0.400000                                                               
+	Cnode[17]=280, Tnode[17]=0.400000                                                               
+	Cnode[18]=270, Tnode[18]=0.400000                                                               
+	Cnode[19]=260, Tnode[19]=0.400000   
+  
+  That is, at every node, we decrease the contacts setpoint by contacts_step
+  But every nodes_per_temp nodes, we increment the temperature by temp_step, and reset the contacts_setpoint to contacts_max
+  */
+  
+  
   /* establish some ladder/replica exchange items */
   Tnode = (float *) calloc(nprocs, sizeof(float));
   Enode = (float *) calloc(nprocs, sizeof(float));
-  Cnode = (int *) calloc(nprocs, sizeof(int));
+  Cnode = (int *) calloc(nprocs, sizeof(int)); //number of contacts setpoints
   Nnode = (int *) calloc(nprocs, sizeof(int));
   
   float current_temp=MC_TEMP_MIN; 
-  int current_setpoint=number_of_contacts_max;
+  int current_setpoint;
   for (l=0; l<nprocs; l++) {
+  	current_setpoint=number_of_contacts_max-l%NODES_PER_TEMP*contacts_step;
   	Cnode[l]=current_setpoint;
     Tnode[l]=current_temp;
     
-    current_setpoint=current_setpoint-contacts_step;
+    
+    //current_setpoint=current_setpoint-contacts_step;
     if ((l+1) % NODES_PER_TEMP==0){
     	current_temp=current_temp+TEMP_STEP;
     }

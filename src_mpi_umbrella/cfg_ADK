@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/files/adk_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/files/adk_0.100_Emin.pdb
-NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/starting_files
+NATIVE_DIRECTORY		None
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/umbrella3/adk
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/MultiUmbrella/adk
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -39,13 +39,13 @@ MC_PRINT_STEPS			1000
 !! Replica Exchange Parameter
 !!
 MC_REPLICA_STEPS                10000
-MAX_EXCHANGE                    75
+MAX_EXCHANGE                    1
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.650
-TEMP_STEP			0.015
-NODES_PER_TEMP		30
+MC_TEMP_MIN			0.450
+TEMP_STEP			0.05
+NODES_PER_TEMP		3
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0

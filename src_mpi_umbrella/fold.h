@@ -29,6 +29,7 @@ void Fold(void) {
   int itmp;
   int ntmp;
   float etmp;
+  int partner;
 
   char rmsd_filename[100];
   char temp_filename[100];
@@ -133,38 +134,69 @@ void Fold(void) {
 
     /******** replica exchange ****************/
     if (mcstep % MC_REPLICA_STEPS == 0) {
-
+		//ierr=MPI_Barrier(mpi_world_comm);  //Added by AB to ensure synchronization--seems like things were getting out of sync for some reason?
         for (i=0; i<nprocs; i++)
           replica_index[i] = i;
         ierr = MPI_Allgather(&E, 1, MPI_FLOAT, Enode, 1, MPI_FLOAT, mpi_world_comm);
         ierr = MPI_Allgather(&natives, 1, MPI_INT, Nnode, 1, MPI_INT, mpi_world_comm);
 
-        if (myrank == 0) {
+        if (myrank == 0) {  //node 0 will mediate the exchange
           for (irep=0; irep<MAX_EXCHANGE; irep++) {
-            sel_num = (int) (threefryrand()*(nprocs-2));
+            sel_num = (int) (threefryrand()*(nprocs-1)); /*Who initiates exchange?*/
+            /*AB: This was previously nprocs-2, but I saw no reason why second to last node shouldn't be able to initiate exchange
+            When we say (int)*random*(n_procs-1), we keep in mind that (int) applies a floor function, so this will draw valeus between 0 and nprocs-2 
+            Moreover nprocs-2 corresponds to the second ot last node due to zero indexing
+            
+            Previously we were only drawing up to third to last node */
+            
+            //Now, we need to choose the "partner" with whom sel_num exchanges
+            if (sel_num%NODES_PER_TEMP == NODES_PER_TEMP -1 ){ //the last setpoint for a given temperature
+            /*In this case, the exchange is initiated by the  lowest setpoint node in a given temp
+            It wouldn't't make sense for this node to exchange with the node above it in index, since this would 
+            involve exchanging with  a partner who has a very different setpoint than the initiator--the acceptance ratio woudl be very low
+            
+            Thus, we always exchange with the node that is one temperature step above it (i.e. whose rank is NODES_PER_TEMP higher)
+            */
+            	partner	=sel_num+NODES_PER_TEMP;
+            }
+            else if (sel_num>=nprocs-NODES_PER_TEMP){
+            /*This is saying that the exchange is initiated by somebody with the highest temperature, so obviously can't go up in temperature
+            */
+            	partner=sel_num+1;
+            }
+            else {  //we either exchnage with the node that is one temperature above or one contact setpoint below, with 50% probability each
+            	if (threefryrand() <0.5) {
+            		partner=sel_num+1;
+            	}
+            	else {
+            		partner=sel_num+NODES_PER_TEMP;
+            	}
+            }
 
             //fprintf(STATUS, "irep : %d, sel_num : %d\n", irep, sel_num);
             //fflush(STATUS);
 
-            delta_E = Enode[sel_num+1]-Enode[sel_num];
-            delta_T = 1.0/Tnode[sel_num+1]-1.0/Tnode[sel_num];
-            delta_N = k_bias*((Nnode[sel_num+1]-Cnode[sel_num])*(Nnode[sel_num+1]-Cnode[sel_num]) - (Nnode[sel_num]-Cnode[sel_num])*(Nnode[sel_num]-Cnode[sel_num]) ) + k_bias *(  (Nnode[sel_num]-Cnode[sel_num+1])*(Nnode[sel_num]-Cnode[sel_num+1]) - (Nnode[sel_num+1]-Cnode[sel_num+1])*(Nnode[sel_num+1]-Cnode[sel_num+1]) );
+            delta_E = Enode[partner]-Enode[sel_num];
+            delta_T = 1.0/Tnode[partner]-1.0/Tnode[sel_num];
+            delta_N = k_bias*((Nnode[partner]-Cnode[sel_num])*(Nnode[partner]-Cnode[sel_num]) - (Nnode[sel_num]-Cnode[sel_num])*(Nnode[sel_num]-Cnode[sel_num]) ) + k_bias *(  (Nnode[sel_num]-Cnode[partner])*(Nnode[sel_num]-Cnode[partner]) - (Nnode[partner]-Cnode[partner])*(Nnode[partner]-Cnode[partner]) );
             delta_all = delta_E * delta_T - delta_N;
-            //fprintf(STATUS, "Cnode[sel_num] = %d, Cnode[sel_num+1] = %d, Nnode[sel_num] = %d, Nnode[sel_num+1] = %d, delta_all = %5.3f \n", Cnode[sel_num], Cnode[sel_num+1],  Nnode[sel_num], Nnode[sel_num+1],delta_all);
+            
             if (delta_all >= 0 || threefryrand() < expf(delta_all)) {
               itmp = replica_index[sel_num];
-              replica_index[sel_num] = replica_index[sel_num+1];
-              replica_index[sel_num+1] = itmp;
+              replica_index[sel_num] = replica_index[partner];
+              replica_index[partner] = itmp;  //for instance, say 5 initiates exchange with 6...then replica_index[5] now gets a value of 6, and vice versa
               etmp = Enode[sel_num];
-              Enode[sel_num] = Enode[sel_num+1];
-              Enode[sel_num+1] = etmp;
+              Enode[sel_num] = Enode[partner];
+              Enode[partner] = etmp;
               ntmp = Nnode[sel_num];
-              Nnode[sel_num] = Nnode[sel_num+1];
-              Nnode[sel_num+1] = ntmp;              
+              Nnode[sel_num] = Nnode[partner];
+              Nnode[partner] = ntmp;              
               accepted_replica[sel_num]++;
+              fprintf(STATUS, "Node %d successfully exchanged with Node %d, with a delta_all of %8.3f", sel_num, partner, delta_all);
             }
             else {
               rejected_replica[sel_num]++;
+              fprintf(STATUS, "Node %d UNSUCCESSFULLY exchanged with Node %d, with a delta_all of %8.3f \n", sel_num, partner, delta_all);
             }
           }
         }
@@ -178,30 +210,26 @@ void Fold(void) {
         //fprintf(STATUS, "Replica Index\n");
         //for (i=0; i<nprocs; i++) fprintf(STATUS, "%5d %5d %8.3f\n", i, replica_index[i], Enode[i]);
 
-        fprintf(STATUS, "RPLC %10ld E : %8.3f Natives : %d FROM %2d(T=%5.3f,setpoint=%d ) E : %8.3f, Natives  :  %d, accepted : %5d, rejected : %5d\n", mcstep, E, natives, replica_index[myrank], Tnode[replica_index[myrank]], Cnode[replica_index[myrank]],Enode[myrank], Nnode[myrank], accepted_replica[myrank], rejected_replica[myrank]);
+        fprintf(STATUS, "RPLC %10ld E : %8.3f Natives : %d FROM %2d(T=%5.3f,setpoint=%d ) E : %8.3f, Natives  :  %d, accepted : %5d, rejected : %5d  \n", mcstep, E, natives, replica_index[myrank], Tnode[replica_index[myrank]], Cnode[replica_index[myrank]],Enode[myrank], Nnode[myrank], accepted_replica[myrank], rejected_replica[myrank]);
         fflush(STATUS);
 
-        for (i=0; i<natoms; i++) {
+        for (i=0; i<natoms; i++) {   //Temporary arrays to store all atom coordinates as they stood before any exchanges happened...these will be transferred later
           buf_out[3*i] = native[i].xyz.x;
           buf_out[3*i+1] = native[i].xyz.y;
           buf_out[3*i+2] = native[i].xyz.z;
         }
 
-        for (i=0; i<nprocs; i++){
-          if (replica_index[i] != i) {
-            if (myrank == i) {
-              ierr = MPI_Recv(buf_in, 3*natoms, MPI_FLOAT, replica_index[i], (i+2), mpi_world_comm, &mpi_status);
-              // fprintf(STATUS, "Receiving coord. to %2d nodes..., ierr : %d\n", replica_index[i], ierr);
-              // fprintf(STATUS, "MPIRcv: %8.3f %8.3f\n", buf_in[0], buf_in[natoms-1]);
-            } else if (myrank == replica_index[i]) {
-              ierr = MPI_Send(buf_out, 3*natoms, MPI_FLOAT, i, (i+2), mpi_world_comm);
-              // fprintf(STATUS, "Sending coord. to %2d nodes..., ierr : %d\n", i, ierr);
-              // fprintf(STATUS, "MPISnd: %8.3f %8.3f\n", buf_out[0], buf_out[natoms-1]);
+        for (i=0; i<nprocs; i++){ //normally, replica_index[i] should equal i, unless an exchange occurred
+          if (replica_index[i] != i) {  //there is a discrepancy, indicating an exchange occurred...for instance, replica_index[5]=6 and replica_index[6]=5
+            if (myrank == i) {  //For instance, if my rank is 6 and replica_index[6]=5, then I received an exchange from node 5
+              ierr = MPI_Recv(buf_in, 3*natoms, MPI_FLOAT, replica_index[i], (i+2), mpi_world_comm, &mpi_status);  //now, receive the atomic coordinates from my partner
+            } else if (myrank == replica_index[i]) {   //For instance, if my rank is 5 and replica_index[6]=5, then this means I gave an exchange to node 6
+              ierr = MPI_Send(buf_out, 3*natoms, MPI_FLOAT, i, (i+2), mpi_world_comm);  //give my coordinates to my partner 
             }
           }
         }
 
-        if (replica_index[myrank] != myrank) {
+        if (replica_index[myrank] != myrank) { //if exchange occurred, transfer temporary data to real-deal atomic data structure
           for (i=0; i<natoms; i++) {
             native[i].xyz.x = buf_in[3*i];
             native[i].xyz.y = buf_in[3*i+1];
