@@ -6,7 +6,7 @@ STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/files/
 NATIVE_DIRECTORY		None
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/MultiUmbrella/adk
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/MultiUmbrella5/adk
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -30,22 +30,22 @@ SKIP_BB_CONTACT_RANGE		1000
 !! MONTE-CARLO PARAMETERS
 !!
 !!
-MC_STEPS			100000000
-MC_ANNEAL_STEPS 		200000000
+MC_STEPS			300000000
+MC_ANNEAL_STEPS 		300000000
 MC_PDB_PRINT_STEPS		500000
 PRINT_PDB			1
-MC_PRINT_STEPS			1000
+MC_PRINT_STEPS			500000
 !!
 !! Replica Exchange Parameter
 !!
 MC_REPLICA_STEPS                10000
-MAX_EXCHANGE                    1
+MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.450
-TEMP_STEP			0.05
-NODES_PER_TEMP		3
+MC_TEMP_MIN			0.400
+TEMP_STEP			0.025
+NODES_PER_TEMP		16
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0
@@ -65,9 +65,9 @@ SEQ_DEP_HB			1
 !!
 UMBRELLA						1
 K_BIAS							0.02
-NUMBER_OF_CONTACTS_MAX			300
+NUMBER_OF_CONTACTS_MAX			150
 CONTACTS_STEP					10
-MIN_SEQ_SEP						4
+MIN_SEQ_SEP						8
 !!
 !!
 !! CONSTRAINT_RMSD is a new feature
@@ -77,6 +77,7 @@ CONSTRAINT_RMSD			-1
 !!
 !! PARAMETER FILES
 !!
+SUBSTRUCTURE_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/files/Substructures
 TRIPLET_ENERGY_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/files/1ake.triple
 SIDECHAIN_TORSION_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/files/1ake.sctorsion
 SECONDARY_STRUCTURE_FILE	/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK/files/1ake.sec_str

@@ -25,7 +25,6 @@ Place input files, along with the pdb file, in the directory sim/DHFR/files/
 (currently contains sample input files for DHFR)
 
 
-
 2. Edit path and configuration options. 
 - Change all instances of /PATHNAME/ to directory containing the MCPU folder, in configuration file /src_mpi/cfg and in src_mpi/backbone.c.
 	Set output directory (PDB_OUT_FILE in cfg and line 9 in backbone.c, in the form /directory/file-prefix)

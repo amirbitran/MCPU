@@ -23,6 +23,10 @@ double hamming_distance_calpha_contacts (const struct residue *residues, const s
 					 const short * contactstring);
 /* end wmj */
 
+/*AB*/
+void Read_substructures(const char *substructure_path,  short **substructures); 
+/*End AB*/
+
 
 void Contacts() {
   int i, j;
@@ -307,9 +311,13 @@ void NewDeltaContacts(short rotate_natoms, short *rotate_atom, char *not_rotated
 
   return;
  }
+ 
+ ////////////////////////////////////////////////////////
 /* wmj */
-const double contact_calpha_cutoff = 7.; /* CONTACTS DEF*/
+///////////////////////////////////////////////////////////
 
+//const double contact_calpha_cutoff = 7.; /* CONTACTS DEF*/
+//AB commented out the above and made it a global in backbone.h, so that it's 7 by default but can be changed
 double fill_calpha_contact_string (const struct residue *residues, const struct atom *atoms,
 				   short * contactstring)
 {
@@ -341,6 +349,7 @@ double fill_calpha_contact_string (const struct residue *residues, const struct 
 	}
     }
 }
+
 
 double number_of_calpha_contacts (const struct residue *residues, const struct atom *atoms)
 {
@@ -460,3 +469,69 @@ double hamming_distance_calpha_contacts (const struct residue *residues, const s
   return hamming_distance;
 }
 /* end wmj */
+
+
+
+
+//AB
+void Read_substructures(const char *substructure_path,  short **substructures)
+{
+	/*
+	Reads substructures in substructure_path
+	Note that when you call this function, you call Read_substructures(substructure_path, substructures),
+	rather than Read_substructures(&substructure_path, &substructures).
+	This is because both substructure_path and substructuers are arrays (the former is an array of chars)
+	so when they are called in this way, you are implicitly referring to the location in memory
+	*/
+	int i;
+	int j;
+	
+	
+	
+	n_substructures=0;
+	char line[250000]; //assumes protein is no larger than 500 residues
+	if ((DATA = fopen(substructure_path, "r"))==NULL) {
+    	fprintf(STATUS, "ERROR: Can't open the file: %s!\n", substructure_path);
+   	 	exit(1);
+  	}
+  	//while (fgets(line, 250000, DATA) != NULL) {
+  	//	n_substructures=n_substructures+1;
+  	//}
+	//fprintf(STATUS, "Number of substructures  :  %i\n", n_substructures);
+	
+	substructures=(short **)malloc(20*sizeof(short*));  //allocate room for at most 20 substructures
+	substructure_sizes=(int *)malloc(20*sizeof(int)); //how many residues is each substructure?
+	
+	
+	
+	i=0;
+	while (fgets(line, 250000, DATA) != NULL) {
+		substructures[i]=(short *)malloc(250000*sizeof(short));
+		substructure_sizes[i]=0;
+		
+
+		
+		for (j=0; j<sizeof(line); j++){
+		 	char letter=line[j];
+			sscanf(&letter, "%hd",&substructures[i][j]);  //Write the current letter into the substructures array as a short (hence hd)...will have value of either 0 or 1
+			
+			if (i==0 && j==79){ 
+				fprintf(STATUS, "We are on i=%d and j=%d. The current line is %s\n, the current letter is %s\n", i,j, line, &letter);
+			}
+			//Hm...the problem seems to be that letter is actually showing up as the whole rest of the line beginning with j=79, rather than just as entry 79 itself
+			if (substructures[i][j]==1) {
+				substructure_sizes[i]=substructure_sizes[i]+1;
+			}
+		}
+		
+  		i=i+1;
+  	}
+	n_substructures=i+1;
+	//fprintf( STATUS, "Element 0, 80 is %hd\n", substructures[0][80]);
+	
+	return;
+}
+//end AB
+
+
+

@@ -1,15 +1,16 @@
 !!
 !! NATIVE PROTEIN DATA
 !!
-NATIVE_FILE			/n/home03/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/marr_0.100_Emin.pdb
-STRUCTURE_FILE  		/n/home03/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/marr_0.100_Emin.pdb
-TEMPLATE_FILE  			/n/home03/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
+NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/marr_0.100_Emin.pdb
+STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/marr_0.100_Emin.pdb
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/MultiUmbrella3
+TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/home03/amirbitran/ShakhnovichLab/MCPU/sim/MARR/replica_tight_spacing/marr
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/MultiUmbrella6/marr
 PROTEIN_NAME			p1afvA
 !!
 !!
-!! POTENTIAL PARAMETERS
+!! POTENTIAL PARAMETERS--When GO is on, I set native attraction to -1.2, native repulsion to 0.2, and use_go_potential to 1
 !!
 NO_NEW_CLASHES			1
 READ_POTENTIAL 			1Lfb
@@ -30,7 +31,7 @@ SKIP_BB_CONTACT_RANGE		1000
 !!
 !!
 MC_STEPS			100000000
-MC_ANNEAL_STEPS 		100000000
+MC_ANNEAL_STEPS 		900000000
 MC_PDB_PRINT_STEPS		500000
 PRINT_PDB			1
 MC_PRINT_STEPS			500000
@@ -42,9 +43,9 @@ MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.450
-TEMP_STEP			0.015
-NODES_PER_TEMP		1
+MC_TEMP_MIN			0.400
+TEMP_STEP			0.025
+NODES_PER_TEMP		16
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0
@@ -58,6 +59,17 @@ USE_ROTAMERS			1
 USE_ROT_PROB			0
 SEQ_DEP_HB			1
 !!
+!!
+!! Umbrella parameters !!
+!!
+!!
+UMBRELLA						1
+K_BIAS							0.02
+NUMBER_OF_CONTACTS_MAX			150
+CONTACTS_STEP					10
+MIN_SEQ_SEP						8
+CONTACT_CALPHA_CUTOFF			8
+!!
 !! CONSTRAINT_RMSD is a new feature
 !!   MC simulation will not let RMSD exceed set value
 !!   A negative value means this feature is inactive
@@ -65,14 +77,14 @@ CONSTRAINT_RMSD			-1
 !!
 !! PARAMETER FILES
 !!
-TRIPLET_ENERGY_FILE		/n/home03/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/MARR.triple
-SIDECHAIN_TORSION_FILE		/n/home03/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/MARR.sctorsion
-SECONDARY_STRUCTURE_FILE	/n/home03/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/MARR.sec_str
+TRIPLET_ENERGY_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/MARR.triple
+SIDECHAIN_TORSION_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/MARR.sctorsion
+SECONDARY_STRUCTURE_FILE	/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/MARR.sec_str
 !!
-AMINO_DATA_FILE			/n/home03/amirbitran/ShakhnovichLab/MCPU/config_files/amino_torsion.data
-ROTAMER_DATA_FILE		/n/home03/amirbitran/ShakhnovichLab/MCPU/config_files/bbind02.May.lib
-ATOM_TYPE_FILE  		/n/home03/amirbitran/ShakhnovichLab/MCPU/config_files/twenty_res_typing
-HELICITY_DATA			/n/home03/amirbitran/ShakhnovichLab/MCPU/config_files/T0130.seq
-HYDROGEN_BONDING_DATA		/n/home03/amirbitran/ShakhnovichLab/MCPU/config_files/hydrogen_jPL3h.data
-POTENTIAL_DATA 		        /n/home03/amirbitran/ShakhnovichLab/MCPU/config_files/p178_conrange4_potential_0.995054
-AROMATIC_FILE			/n/home03/amirbitran/ShakhnovichLab/MCPU/config_files/aromatic_noTYR.energy
+AMINO_DATA_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/config_files/amino_torsion.data
+ROTAMER_DATA_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/config_files/bbind02.May.lib
+ATOM_TYPE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/config_files/twenty_res_typing
+HELICITY_DATA			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/config_files/T0130.seq
+HYDROGEN_BONDING_DATA		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/config_files/hydrogen_jPL3h.data
+POTENTIAL_DATA 		        /n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/config_files/p178_conrange4_potential_0.995054
+AROMATIC_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/config_files/aromatic_noTYR.energy

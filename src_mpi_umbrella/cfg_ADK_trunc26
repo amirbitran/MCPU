@@ -3,9 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK_trunc26/files/adk_truncated26.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK_trunc26/files/adk_truncated26.pdb
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK_trunc26/MultiUmbrella3
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK_trunc26/replica_tight_spacing2/adk_t26
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/ADK_trunc26/MultiUmbrella4/adk_t26
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -31,9 +32,9 @@ SKIP_BB_CONTACT_RANGE		1000
 !!
 MC_STEPS			200000000
 MC_ANNEAL_STEPS 		200000000
-MC_PDB_PRINT_STEPS		1000000
+MC_PDB_PRINT_STEPS		500000
 PRINT_PDB			1
-MC_PRINT_STEPS			1000000
+MC_PRINT_STEPS			500000
 !!
 !! Replica Exchange Parameter
 !!
@@ -42,9 +43,9 @@ MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.510
-TEMP_STEP			0.015
-NODES_PER_TEMP		1
+MC_TEMP_MIN			0.400
+TEMP_STEP			0.025
+NODES_PER_TEMP		14
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0
@@ -59,9 +60,11 @@ USE_ROT_PROB			0
 SEQ_DEP_HB			1
 !!
 !! Umbrella parameters !!
-UMBRELLA			1
-K_BIAS				0.02
-NUMBER_OF_CONTACTS_MAX			300
+UMBRELLA						1
+K_BIAS							0.02
+NUMBER_OF_CONTACTS_MAX			130
+CONTACTS_STEP					10
+MIN_SEQ_SEP						8
 !! CONSTRAINT_RMSD is a new feature
 !!   MC simulation will not let RMSD exceed set value
 !!   A negative value means this feature is inactive

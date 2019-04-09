@@ -3,9 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/rsme_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/rsme_0.100_Emin.pdb
+NATIVE_DIRECTORY		None
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/replica_tight_spacing/rsme
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/MultiUmbrella/rsme
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -29,8 +30,8 @@ SKIP_BB_CONTACT_RANGE		1000
 !! MONTE-CARLO PARAMETERS
 !!
 !!
-MC_STEPS			100000000
-MC_ANNEAL_STEPS 		100000000
+MC_STEPS			300000000
+MC_ANNEAL_STEPS 		99999900000000
 MC_PDB_PRINT_STEPS		500000
 PRINT_PDB			1
 MC_PRINT_STEPS			500000
@@ -42,9 +43,9 @@ MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.510
-TEMP_STEP			0.015
-NODES_PER_TEMP		1
+MC_TEMP_MIN			0.400
+TEMP_STEP			0.025
+NODES_PER_TEMP		11
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0
@@ -58,6 +59,17 @@ USE_ROTAMERS			1
 USE_ROT_PROB			0
 SEQ_DEP_HB			1
 !!
+!!
+!! Umbrella parameters !!
+!!
+!!
+UMBRELLA						1
+K_BIAS							0.02
+NUMBER_OF_CONTACTS_MAX			100
+CONTACTS_STEP					10
+MIN_SEQ_SEP						8
+CONTACT_CALPHA_CUTOFF			6
+!!
 !! CONSTRAINT_RMSD is a new feature
 !!   MC simulation will not let RMSD exceed set value
 !!   A negative value means this feature is inactive
@@ -65,9 +77,9 @@ CONSTRAINT_RMSD			-1
 !!
 !! PARAMETER FILES
 !!
-TRIPLET_ENERGY_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/4e8b.triple
-SIDECHAIN_TORSION_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/4e8b.sctorsion
-SECONDARY_STRUCTURE_FILE	/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/4e8b.sec_str
+TRIPLET_ENERGY_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/RSME.triple
+SIDECHAIN_TORSION_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/RSME.sctorsion
+SECONDARY_STRUCTURE_FILE	/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/RSME.sec_str
 !!
 AMINO_DATA_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/config_files/amino_torsion.data
 ROTAMER_DATA_FILE		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/config_files/bbind02.May.lib

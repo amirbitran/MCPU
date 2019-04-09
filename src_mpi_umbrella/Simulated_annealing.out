@@ -1,0 +1,22 @@
+The cfg file is cfg_1igd_sim_annealing
+Modifying cfg file for temperature 0.400
+Running simulation
+Renaming file 1igd_0.400.2000000 as 0.pdb
+Modifying cfg file for temperature 0.350
+Running simulation
+Renaming file 1igd_0.350.2000000 as 0.pdb
+Modifying cfg file for temperature 0.300
+Running simulation
+Renaming file 1igd_0.300.2000000 as 0.pdb
+Modifying cfg file for temperature 0.250
+Running simulation
+Renaming file 1igd_0.250.2000000 as 0.pdb
+Modifying cfg file for temperature 0.200
+Running simulation
+Renaming file 1igd_0.200.2000000 as 0.pdb
+Modifying cfg file for temperature 0.150
+Running simulation
+Renaming file 1igd_0.150.2000000 as 0.pdb
+Modifying cfg file for temperature 0.100
+Running simulation
+Renaming file 1igd_0.100.2000000 as 0.pdb

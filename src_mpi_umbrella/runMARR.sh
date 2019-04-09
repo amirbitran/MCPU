@@ -1,14 +1,14 @@
 #! /bin/bash
 
-#SBATCH -n 20
-#SBATCH -J replicaCRP
-#SBATCH -o replicaCRP.out 
-#SBATCH -e replicaCRP.err
-#SBATCH -p general 
-#SBATCH --mem=15000 
+#SBATCH -n 400
+#SBATCH -N 7
+#SBATCH -J replicaMARR
+#SBATCH -o replicaMARR.out 
+#SBATCH -e replicaMARR.err
+#SBATCH -p shakhnovich 
+#SBATCH --mem=70000 
 #SBATCH --mail-type=ALL
-#SBATCH -t 4-00:00
+#SBATCH -t 7-00:00
 #SBATCH --mail-user=amirbitran@g.harvard.edu
-source new-modules.sh
-module load gcc/6.1.0-fasrc01 openmpi/2.0.1-fasrc01
-mpiexec -n 20 ./fold_potential_mpi ./cfg_CRP > out.txt 32> err.txt 
+module load gcc/7.1.0-fasrc01 openmpi/2.1.0-fasrc02
+mpiexec -n 400 ./fold_potential_mpi ./cfg_MARR > out.txt 32> err.txt 

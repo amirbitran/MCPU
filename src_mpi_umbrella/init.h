@@ -119,7 +119,7 @@ void SetupMuPotential (void) {
 	  else
 	    potential[i][j] = -1;
 	}
-	else
+	else   /*AB: Here is the mu potential, ex. eq. (2) in Yang..Shakhnovich et. al PNAS 2007*/
 	  potential[i][j] = ((1-mu)*nnat_cons[i][j] - mu*nat_cons[i][j])/(mu*nat_cons[i][j] + (1-mu)*nnat_cons[i][j]); 
 	potential[j][i] = potential[i][j];
       }
@@ -137,10 +137,10 @@ void SetupMuPotential (void) {
 void InitializeProtein() {
   int i;
   /* Reset variables */
-
+  /**See atom.h to learn about how atom structures are set up/
   fprintf(STATUS, "---MODEL---\n");
-  fprintf(STATUS, "  file:\t\t%s   \n", native_file);
-  native = (struct atom *) calloc(MAX_ATOMS, sizeof(struct atom));
+  fprintf(STATUS, "  file:\t\t%s   \n", native_file);  /*Set up arrays for native file, minimized file, and file with min RMSD*/
+  native = (struct atom *) calloc(MAX_ATOMS, sizeof(struct atom));  /*Allocates memory for an array of atom_structures, each of which corresponds to data for one atom*/
   native_Emin = (struct atom *) calloc(MAX_ATOMS, sizeof(struct atom));
   native_RMSDmin = (struct atom *) calloc(MAX_ATOMS, sizeof(struct atom));
   prev_native = (struct atom *) calloc(MAX_ATOMS, sizeof(struct atom));
@@ -154,13 +154,13 @@ void InitializeProtein() {
   amino_acids = (struct amino *) calloc(20, sizeof(struct amino));
   fprintf(STATUS, "Made amino_acids structure\n");
 
-  ReadTypesFile();
+  ReadTypesFile(); /*Left off here*/
   fprintf(STATUS, "Read Types File\n");
   ReadHelicityData();
   fprintf(STATUS, "Read Helicity Data\n");
   
   /* Read data from native_file into native */
-  ReadNative(native_file, native, &natoms);
+  ReadNative(native_file, native, &natoms);  //AB: This reads native_file into the structure native
   fprintf(STATUS, "Read Native\n");
 
   /* Count nresidues */
@@ -200,10 +200,10 @@ void InitializeProtein() {
     
   /* Get residue info */
 
-  native_residue = (struct residue *) calloc(nresidues, sizeof(struct residue));
+  native_residue = (struct residue *) calloc(nresidues, sizeof(struct residue)); //I believe native_residue stores the indices for the different atoms (where they are located within native), and other info
   cur_rotamers = (int *) calloc(nresidues, sizeof(int));
-  GetResidueInfo(native, native_residue, nresidues, natoms);
-
+  GetResidueInfo(native, native_residue, nresidues, natoms);   //This adds the necessary info into native_residue
+ 
   /* Allocate memory for data structures */
   
   InitializeData(); 
@@ -1244,7 +1244,7 @@ void SetProgramOptions(int argc, char *argv[]) {
       MPI_STOP = 1;
     }
   }
-
+	
   ierr = MPI_Bcast(&MPI_STOP, 1, MPI_INT, 0, mpi_world_comm);
 
   if (MPI_STOP == 1) {
@@ -1255,6 +1255,7 @@ void SetProgramOptions(int argc, char *argv[]) {
   }
 
   /* open cfg file */
+  
   if ((DATA = fopen(cfg_file, "r"))==NULL) {
     printf("ERROR: Can't open the file: %s!\n", cfg_file);
     exit(1);
@@ -1281,6 +1282,10 @@ void SetProgramOptions(int argc, char *argv[]) {
       else if (!strcmp(token, "TEMPLATE_FILE")) {
 	sscanf(line, "%*s %s", name);
 	strcpy(template_file, name);
+      }
+      else if (!strcmp(token, "SUBSTRUCTURE_FILE")){
+      sscanf(line, "%*s %s", name);
+      strcpy(substructure_path, name);
       }
       else if (!strcmp(token, "ALIGNMENT_FILE")) {
 	sscanf(line, "%*s %s", name);
@@ -1421,6 +1426,8 @@ void SetProgramOptions(int argc, char *argv[]) {
         contacts_step = (int) value;  
       else if (!strcmp(token, "MIN_SEQ_SEP"))
       	min_seq_sep = (int) value; 
+      else if (!strcmp(token, "CONTACT_CALPHA_CUTOFF"))
+      	contact_calpha_cutoff = value; //note that by default, this value is set to 7 in backbone.h, unless you enter something in cfg file
 	  else {
 		printf("config file option not found: %s\n", token);
 	//exit(0);
@@ -1434,8 +1441,23 @@ void SetProgramOptions(int argc, char *argv[]) {
 	If we have entered in a native directory, then the files in this directory will override the native file that is entered here
 	The files in the native directory need to be in the form my_rank.pdb/
 	*/
+  
   if (strcmp(native_directory, "None")!=0) {
   	sprintf(native_file, "%s/%d.pdb", native_directory, myrank);
+  	//printf("%s", native_directory);
+  	
+  	/*
+  	Now, suppose we have not specified one starting file for each core
+  	Then we repeat starting files periodically every nodes_per_temp
+  	
+  	So if nodes_per_temp=10, then cores 0, 10, 20, etc will all use 0.pdb
+  	*/
+  	FILE *test_file;
+  	if ((test_file = fopen(native_file, "r"))==NULL) {  
+  		int mod_rank = myrank % NODES_PER_TEMP;
+  		sprintf(native_file, "%s/%d.pdb", native_directory, mod_rank);
+  		
+  	}
   }
 
   if (nprocs % NODES_PER_TEMP!=0) {
@@ -1472,6 +1494,16 @@ void SetProgramOptions(int argc, char *argv[]) {
   
   
   /* establish some ladder/replica exchange items */
+  /*Note for C newbies such as AB: The call
+  
+  (float *) calloc(nprocs, sizeof(float));
+  
+  Means that we are allocating an array of floats with nprocs elements
+  The function calloc allocates the necessary amount of memory (which is given by
+  nprocs times the memory per array element) and sets those elements to zero
+  The (float*) in front of it indicates that we are asking for a pointer to an
+  array of floats
+  */
   Tnode = (float *) calloc(nprocs, sizeof(float));
   Enode = (float *) calloc(nprocs, sizeof(float));
   Cnode = (int *) calloc(nprocs, sizeof(int)); //number of contacts setpoints
@@ -1483,8 +1515,6 @@ void SetProgramOptions(int argc, char *argv[]) {
   	current_setpoint=number_of_contacts_max-l%NODES_PER_TEMP*contacts_step;
   	Cnode[l]=current_setpoint;
     Tnode[l]=current_temp;
-    
-    
     //current_setpoint=current_setpoint-contacts_step;
     if ((l+1) % NODES_PER_TEMP==0){
     	current_temp=current_temp+TEMP_STEP;
@@ -1496,11 +1526,13 @@ void SetProgramOptions(int argc, char *argv[]) {
   
 
   /* SET name of PDB and log file  */
+  
   if (umbrella==1){
   	sprintf(std_file, "%s_T_%5.3f_%d.log", std_prefix, MC_TEMP, number_of_contacts_setpoint);
   	sprintf(pdb_out_file+ls, "_%5.3f_%d", MC_TEMP, number_of_contacts_setpoint);
   	}
   else {
+  	k_bias=0;  //regardless of what we had inputted for k_bias, if umbrella is off, we don't want any bias!!
   	if (NODES_PER_TEMP==1){
   		sprintf(std_file, "%s_T_%5.3f.log", std_prefix, MC_TEMP);
   		sprintf(pdb_out_file+ls, "_%5.3f", MC_TEMP);
@@ -1518,12 +1550,28 @@ void SetProgramOptions(int argc, char *argv[]) {
 
 
   replica_index = (int *) calloc(nprocs, sizeof(int));
+  
+  
+  //AB attempted the following
+  //accepted_replica = (int **) calloc(nprocs, sizeof(int*)); //AB made this 2D array 
+  //rejected_replica = (int **) calloc(nprocs, sizeof(int*));
+  //int i;
+  //for (i=0; i<nprocs; i++) {
+        //accepted_replica[i]=(int*) calloc(nprocs, sizeof(int));
+        //rejected_replica[i]=(int*) calloc(nprocs, sizeof(int));
+        //for (l=0; l<nprocs; l++) {
+        //	accepted_replica[i][l] = rejected_replica[i][l] = 0;
+ 		//}
+    //}
+  
+  //Previously:
   accepted_replica = (int *) calloc(nprocs, sizeof(int));
   rejected_replica = (int *) calloc(nprocs, sizeof(int));
-
+  
   for (l=0; l<nprocs; l++) {
-    accepted_replica[l] = rejected_replica[l] = 0;
-  }
+  	accepted_replica[l] = rejected_replica[l] = 0;
+   }
+
 
   fprintf(STATUS, "The native directory is %s \n", native_directory);
   fprintf(STATUS, "Temperature/setpoint range for replica exchange!\n");

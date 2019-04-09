@@ -3,7 +3,7 @@
 struct cell {
   char X, Y, Z;
   struct cell *neighbors[27];
-  short atom_list[MAX_CELL_ATOMS];
+  short atom_list[MAX_CELL_ATOMS];  //AB: Each cell has this array called atom_list which has MAX_CELL_ATOMS = 100 elements
   unsigned char natoms;
 };
 
@@ -63,6 +63,7 @@ void FindLatticeCoordinates (struct atom *ATOM) {
 
 void InitializeMatrix() {
 
+/*The Matrix is a  3D array, each dimension is given by MATRIX_SIZE = 20 (# of AAs)*/
   short i, j, k, a, b, c;
 
   the_matrix = (struct cell ***) calloc(MATRIX_SIZE, sizeof(struct cell **));

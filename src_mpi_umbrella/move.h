@@ -101,9 +101,14 @@ void MakeMove(Float step_size, Float use_global_bb_moves) {
     }
     else if ((use_yang == 1) && (n_soln == 0)) {
       reject = 1;
+      //fprintf(STATUS, "Yang move rejected \n");
       if (sidechain_step == 0)
         nothers++;
     }
+    //else if ((use_yang == 1) && (n_soln != 0)) {
+    //fprintf(STATUS, "Yang move accepted \n");
+
+    //}
     /* below block is new code to support RMSD constraint
      * commenting this block fixes bug.
      * --> has to be something messing with logic?
@@ -129,11 +134,11 @@ void MakeMove(Float step_size, Float use_global_bb_moves) {
 
       dE_aro = aromaticenergy() - prev_E_aro;
       delta_contacts = 0;
-      for (i=0; i<total_pairs; i++) {
-	N = ab[i].a; M = ab[i].b;
-	del = data[N][M].delta_contacts-data[N][M].contacts;
+      for (i=0; i<total_pairs; i++) { /*AB: Loop through all pairs of atoms and compute potential change due to move*/
+	N = ab[i].a; M = ab[i].b;  /*N, M are indices for pairs of atoms*/
+	del = data[N][M].delta_contacts-data[N][M].contacts;  /*I think del indicates somethign like how many new contacts have formed?*/
 	delta_contacts += del;
-	dE_pot += ((Float) del)*potential[native[N].smogtype][native[M].smogtype];
+	dE_pot += ((Float) del)*potential[native[N].smogtype][native[M].smogtype];  /*Compute change in mu potential contribution ...I think the del in front somehow restricts your attention to atoms that have come into contact?*/
       }
       if (weight_hbond) {
         if (sidechain_step == 0)

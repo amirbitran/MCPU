@@ -78,8 +78,14 @@ void Fold(void) {
     /* wmj */
   { /* Initialize contactstring */
     orig_contactstring = malloc (sizeof *orig_contactstring * nresidues * nresidues);
-    fill_calpha_contact_string (native_residue, orig_native, orig_contactstring);
+    fill_calpha_contact_string (native_residue, struct_native, orig_contactstring);  //AB made this change so that this reads structure_file instead of native_file...still ok to pass native_residue structure so long as structure file has same # of atoms as native file
+    //fill_calpha_contact_string (native_residue, orig_native, orig_contactstring);  //can potentially pass struct_native instead of orig_native, while still passing native_residue, since the function just uses native_residue to figure out where each atom is located (at what index)...this should not change so long as I don't change the protein size
   }
+  
+
+  /*AB*/
+   //Read_substructures(substructure_path, substructures);
+   /*End AB*/
     
 
   /* setup initial energies */
@@ -91,7 +97,7 @@ void Fold(void) {
    * struct_native (struct_f1) is the reference structure for RMSD
    */
   for (i=0; i<nalign; ++i) {
-    struct_f1[i+1].CA.x = struct_native[struct_residue[map_to_struct[i]].CA].xyz.x;
+    struct_f1[i+1].CA.x = struct_native[struct_residue[map_to_struct[i]].CA].xyz.x;  //struct_native is our array for the STRUCTURE FILE: that is the "goal" structure that the protein aims to look like
     struct_f1[i+1].CA.y = struct_native[struct_residue[map_to_struct[i]].CA].xyz.y;
     struct_f1[i+1].CA.z = struct_native[struct_residue[map_to_struct[i]].CA].xyz.z;
     struct_f2[i+1].CA.x = native[native_residue[map_to_seq[i]].CA].xyz.x;
@@ -124,7 +130,7 @@ void Fold(void) {
   nothers = 0;
   n_sidechain_accepted = 0;
 
-  natives=number_of_calpha_native_contacts (native_residue, native, orig_contactstring);
+  natives=number_of_calpha_native_contacts (native_residue, native, orig_contactstring);  
   fprintf(STATUS, "         step #    energy contact rmsd   natives potnl    sctor      hbond       Aro   torsion accept reject others   temp setpoint\n---------------------------------------------------------------------------------------------\n");
 
 
@@ -190,13 +196,15 @@ void Fold(void) {
               Enode[partner] = etmp;
               ntmp = Nnode[sel_num];
               Nnode[sel_num] = Nnode[partner];
-              Nnode[partner] = ntmp;              
+              Nnode[partner] = ntmp;  
+              //accepted_replica[sel_num][partner]++;            
               accepted_replica[sel_num]++;
-              fprintf(STATUS, "Node %d successfully exchanged with Node %d, with a delta_all of %8.3f", sel_num, partner, delta_all);
+              //fprintf(STATUS, "Node %d successfully exchanged with Node %d, with a delta_all of %8.3f \n", sel_num, partner, delta_all);
             }
             else {
+              //rejected_replica[sel_num][partner]++; 
               rejected_replica[sel_num]++;
-              fprintf(STATUS, "Node %d UNSUCCESSFULLY exchanged with Node %d, with a delta_all of %8.3f \n", sel_num, partner, delta_all);
+              //fprintf(STATUS, "Node %d UNSUCCESSFULLY exchanged with Node %d, with a delta_all of %8.3f \n", sel_num, partner, delta_all);
             }
           }
         }
@@ -210,7 +218,10 @@ void Fold(void) {
         //fprintf(STATUS, "Replica Index\n");
         //for (i=0; i<nprocs; i++) fprintf(STATUS, "%5d %5d %8.3f\n", i, replica_index[i], Enode[i]);
 
-        fprintf(STATUS, "RPLC %10ld E : %8.3f Natives : %d FROM %2d(T=%5.3f,setpoint=%d ) E : %8.3f, Natives  :  %d, accepted : %5d, rejected : %5d  \n", mcstep, E, natives, replica_index[myrank], Tnode[replica_index[myrank]], Cnode[replica_index[myrank]],Enode[myrank], Nnode[myrank], accepted_replica[myrank], rejected_replica[myrank]);
+		if (mcstep % MC_PRINT_STEPS == 0) {
+			fprintf(STATUS, "RPLC %10ld E : %8.3f Natives : %d FROM %2d(T=%5.3f,setpoint=%d ) E : %8.3f, Natives  :  %d, accepted : %5d, rejected : %5d  \n", mcstep, E, natives, replica_index[myrank], Tnode[replica_index[myrank]], Cnode[replica_index[myrank]],Enode[myrank], Nnode[myrank], accepted_replica[myrank], rejected_replica[myrank]);
+        	//fprintf(STATUS, "RPLC %10ld E : %8.3f Natives : %d FROM %2d(T=%5.3f,setpoint=%d ) E : %8.3f, Natives  :  %d, accepted : %5d, rejected : %5d  \n", mcstep, E, natives, replica_index[myrank], Tnode[replica_index[myrank]], Cnode[replica_index[myrank]],Enode[myrank], Nnode[myrank], accepted_replica[myrank][replica_index[myrank]], rejected_replica[myrank][replica_index[myrank]]);
+        }
         fflush(STATUS);
 
         for (i=0; i<natoms; i++) {   //Temporary arrays to store all atom coordinates as they stood before any exchanges happened...these will be transferred later
@@ -369,6 +380,19 @@ void Fold(void) {
   fprintf(STATUS, "rms_Rmin:%8.2f  E_RMSDmin:%8.2f E_Rmin_pot:%8.2f E_Rhb:%8.2f E_Rtor:%8.2f E_Rsct:%8.2f E_Raro:%8.2f\n",
          rms_RMSDmin, E_RMSDmin, E_RMSDmin_pot, E_RMSDmin_hbond, E_RMSDmin_tor, E_RMSDmin_sct, E_RMSDmin_aro);
   fprintf(STATUS, "Pdb file at RMSDmin: %s\n", rmsd_filename);
+  
+  
+  
+
+  //The following is added by AB
+  //if (myrank<nprocs-1) {
+  	//fprintf(STATUS, "Final exchange statistics with node %i (T = %5.3f, setpoint=%d):  accepted = %i, rejected = %i \n", myrank+1, Tnode[myrank+1], Cnode[myrank+1], accepted_replica[myrank][myrank + 1], rejected_replica[myrank][myrank + 1]);
+  	//if (myrank < nprocs- NODES_PER_TEMP) {
+  	//	fprintf(STATUS, "Final exchange statistics with node %i (T = %5.3f, setpoint=%d):  accepted = %i, rejected = %i \n", myrank+NODES_PER_TEMP, Tnode[myrank+NODES_PER_TEMP], Cnode[myrank+NODES_PER_TEMP], accepted_replica[myrank][myrank + NODES_PER_TEMP], rejected_replica[myrank][myrank + NODES_PER_TEMP]);
+  		
+  	//}
+  //}
+  
 
   return;
 }

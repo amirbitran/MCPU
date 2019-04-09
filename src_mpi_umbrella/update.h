@@ -35,12 +35,12 @@ void Update() {
       else
 	temp_atom->matrix->atom_list[temp_atom->matrix->natoms++] = N;
 
-      if(temp_atom->matrix->natoms>=MAX_CELL_ATOMS){
+      if(temp_atom->matrix->natoms>=MAX_CELL_ATOMS){ //We have some sort of problem if the number of atoms in the matrix's atom_list exceeds or is equal to MAX_CELL_ATOMS (100)
         fprintf(STATUS, "Lattice Error: Update(), num. of atoms exceeds maximum num. %d of the cell", MAX_CELL_ATOMS);
         fprintf(STATUS, "Lattice Error: atom %4s %4d %4s\n", temp_atom->atomname, temp_atom->res_num, temp_atom->res);
         fprintf(STATUS, "Lattice Error: atom lists\n");
-        for (k=0;k<temp_atom->matrix->natoms;k++){
-          M=temp_atom->matrix->atom_list[k];
+        for (k=0;k<temp_atom->matrix->natoms;k++){ //Loop through all entries in the atom_list for the matrix affiliated with the current atom
+          M=temp_atom->matrix->atom_list[k];  //The value for kth entry in atom list, indexes some other atom in the native structure
           fprintf(STATUS, "Lattice Error: %4d %4s %4d %4s\n", M, native[M].atomname, native[M].res_num, native[M].res);
         }
         exit(1);

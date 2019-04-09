@@ -1,14 +1,14 @@
 #! /bin/bash
 
-#SBATCH -n 36
-#SBATCH -J MARR_unfolding
+#SBATCH -n 100
+#SBATCH -N 2
+#SBATCH -J MARR_unfolding_highertemps
 #SBATCH -o MARR_unfolding.out 
 #SBATCH -e MARR_unfolding.err
-#SBATCH -p general 
-#SBATCH --mem=15000 
+#SBATCH -p shakhnovich 
+#SBATCH --mem=65000 
 #SBATCH --mail-type=ALL
-#SBATCH -t 4-00:00
+#SBATCH -t 7-00:00
 #SBATCH --mail-user=amirbitran@g.harvard.edu
-source new-modules.sh
-module load gcc/6.1.0-fasrc01 openmpi/2.0.1-fasrc01
-mpiexec -n 36 ./fold_potential_mpi ./cfg_MARR_unfolding > out.txt 32> err.txt 
+module load gcc/7.1.0-fasrc01 openmpi/2.1.0-fasrc02
+mpiexec -n 100 ./fold_potential_mpi ./cfg_MARR_unfolding > out.txt 32> err.txt 

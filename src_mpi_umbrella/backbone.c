@@ -3,6 +3,8 @@
 int main(int argc, char *argv[]) {
 
   int i;
+  
+
 
 
 
@@ -39,7 +41,7 @@ int main(int argc, char *argv[]) {
 
   STEP_SIZE = 2*deg2rad;
 
-  InitializeMatrix();
+  InitializeMatrix();  /*AB: Initializes a matrix whose function I'm not totally sure of at the moment*/
   InitializeProtein();
   for (i=0;i<nresidues;i++)
     total_ntorsions += native_residue[i].ntorsions;

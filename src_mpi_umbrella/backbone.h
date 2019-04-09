@@ -180,6 +180,7 @@ char amino_letters[20] = "ARNDCQEGHILKMFPSTWYV";
 /*Bias*/
 double k_bias;
 short * orig_contactstring;
+short ** substructures; //AB
 int number_of_contacts_setpoint;
 int umbrella; /*Is umbrella simulation turned on?*/
 int number_of_contacts_max;  /*Number of contacts setpoint for first node*/
@@ -189,6 +190,9 @@ int min_seq_sep;  /*How far apart in sequence do two residues have to be to qual
 int new_natives;
 int diff_number_of_contacts_new;
 int diff_number_of_contacts_current;
+int n_substructures;
+int *substructure_sizes; //AB
+double contact_calpha_cutoff = 7.; //AB
 
 /* program option variables */
 int PRINT_PDB;
@@ -233,6 +237,7 @@ float cluster_psi[20][NOCLUSTERS];
 char std_file[500], std_prefix[500]; /* vzhao: added these here from backbone.c */
 /* vzhao: I increased the length limits to 500 from 100/150 for these: */
 char native_file[500], structure_file[500], native_directory[1000], triplet_file[500], sctorsion_file[500], sec_str_file[500], template_file[500], pdb_out_file[500], amino_data_file[500], rotamer_data_file[500], potential_file[500], atom_type_file[500], helicity_data[500], hydrogen_bonding_data[500];
+char substructure_path[500]; //AB
 /* file names added 12DEC02 IAH */
 char min_etot_file[500], min_drms_file[500];
 char aromatic_file[500];
@@ -292,6 +297,7 @@ MPI_Comm mpi_world_comm;
 MPI_Status mpi_status;
 int nprocs, myrank, sel_num, ierr;
 int *accepted_replica, *rejected_replica, *replica_index;
+//int **accepted_replica, **rejected_replica, *replica_index; //AB changed to 2D array
 float *Enode, *Tnode;
 int  *Nnode, *Cnode;
 float delta_E, delta_T, delta_N, delta_all;

@@ -18,7 +18,7 @@ void DoRotation(int a, int b, int c, int d, Float delta_angle, short rotate_nato
   norm = 1/sqrt(v.x*v.x+v.y*v.y+v.z*v.z);
   v.x *= norm;
   v.y *= norm;
-  v.z *= norm;
+  v.z *= norm;  /*We have computed vector between b and c, and now we normalize it!*/
 
   t = tan(delta_angle*0.5);
   

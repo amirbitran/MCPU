@@ -284,7 +284,7 @@ void integloop(float step_size, int *n_soln)
     fprintf(STATUS, "\nRecording the solution at min. rmsd in %s\n", out_pdb);
     write_pdb_backbone(out_pdb, res_name, r_n, r_a, r_c, r_o, r_s, n0, n0+4);
    }
-
+  //fprintf(STATUS,  "Yang move attempted \n");
   return;
  }
 
