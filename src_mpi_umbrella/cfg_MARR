@@ -6,7 +6,7 @@ STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files
 NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/MultiUmbrella3
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/MultiUmbrella6/marr
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/Jtest/marr
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -30,7 +30,7 @@ SKIP_BB_CONTACT_RANGE		1000
 !! MONTE-CARLO PARAMETERS
 !!
 !!
-MC_STEPS			100000000
+MC_STEPS			200000000
 MC_ANNEAL_STEPS 		900000000
 MC_PDB_PRINT_STEPS		500000
 PRINT_PDB			1
@@ -41,7 +41,7 @@ MC_PRINT_STEPS			500000
 MC_REPLICA_STEPS                10000
 MAX_EXCHANGE                    75
 !!
-!! SIMULATION PARAMETERS
+!! SIMULATION PARAMETERS--NODES_PER_TEMP WAS PREVIOUSLY 16
 !!
 MC_TEMP_MIN			0.400
 TEMP_STEP			0.025

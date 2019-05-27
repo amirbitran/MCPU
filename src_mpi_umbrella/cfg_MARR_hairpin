@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_hairpin/files/marr_h_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_hairpin/files/marr_h_0.100_Emin.pdb
-NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_hairpin/MultiUmbrella
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_hairpin/MultiUmbrella2
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_hairpin/MultiUmbrella2/marr_h
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_hairpin/Jtest/marr_h
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -41,7 +41,7 @@ MC_PRINT_STEPS			500000
 MC_REPLICA_STEPS                10000
 MAX_EXCHANGE                    75
 !!
-!! SIMULATION PARAMETERS
+!! SIMULATION PARAMETERS---NOTE YANG_MOVE WAS PREVIOUSLY 0.5, NODES_PER_TEMP PREVIOUSLY 3
 !!
 MC_TEMP_MIN			0.400
 TEMP_STEP			0.025

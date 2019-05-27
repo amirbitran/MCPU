@@ -46,7 +46,7 @@ void driver_rot(double obj_i[3], double obj_f[3], double tor2[3], double tor3[3]
 //!*******************************************************************
 //! connectivity of atoms:
 //!   N1-A1-C1-N2-A2-C2-N3-A3-C3
-//!
+//! Same as in Dill paper
 //! input:
 //!
 //  * b_len(1:6): bond lengths (A1-C1, C1-N2, ..., N3-A3)
@@ -187,6 +187,7 @@ void initialize_loop_closure(double b_len[6], double b_ang[7], double t_ang[2])
  {
 //!-----------------------------------------------------------------------
 //! Input angles for the given bond lengths and angles 
+//! i.e. the fixed values! Namely the fixed omega dihedral angle and known bond lengths and atomic angles based on basic chemistry, orbitals etc 
 //!-----------------------------------------------------------------------
 //  implicit none
 //  real(dp), intent(in) :: b_len(6), b_ang(7), t_ang(2)
@@ -211,7 +212,7 @@ void initialize_loop_closure(double b_len[6], double b_ang[7], double t_ang[2])
   int i, j;
   
 //  call initialize_sturm(tol_secant, max_iter_sturm, max_iter_secant)
-  initialize_sturm(&tol_secant, &max_iter_sturm, &max_iter_secant);
+  initialize_sturm(&tol_secant, &max_iter_sturm, &max_iter_secant); //Not totally sure what this doe
 
 //  len0(1:6) = b_len(1:6)
   for (i=0;i<6;i++)
@@ -232,14 +233,15 @@ void initialize_loop_closure(double b_len[6], double b_ang[7], double t_ang[2])
   axis[2] = 0.;
 
 //  do i = 0, 1
-  for (i=0;i<2;i++)
+  for (i=0;i<2;i++) //Loop through all atoms in triplet of residues
    {
 //     rr_a1(1:3) = (/ cos(b_ang0(3*i+2))*len0(3*i+1), sin(b_ang0(3*i+2))*len0(3*i+1), 0.0d0 /)
-     rr_a1[0] = cos(b_ang0[3*i+1])*len0[3*i];
+// Get various vectors
+     rr_a1[0] = cos(b_ang0[3*i+1])*len0[3*i];  //Vector from previous nitrogen to current alpha carbon
      rr_a1[1] = sin(b_ang0[3*i+1])*len0[3*i];
-     rr_a1[2] = 0.0e0;
+     rr_a1[2] = 0.0e0;  //Set z value to 0
 //     rr_n2(1:3) = (/ len0(3*i+2), 0.0d0, 0.0d0 /)
-     rr_n2[0] = len0[3*i+1];
+     rr_n2[0] = len0[3*i+1];   //LEFT OFF HERE!
      rr_n2[1] = 0.0e0;
      rr_n2[2] = 0.0e0;
 //     rr_c1a1(:) = rr_a1(:) - rr_c1(:)
@@ -1846,7 +1848,7 @@ void get_rot(double obj_i[3], double obj_f[3], double tor1[3], double tor2[3], d
 void driver_rot(double obj_i[3], double obj_f[3], double tor2[3], double tor3[3], float dih_change)
  {
 /*obj_i: initial coordinate of target atom
-  obj_f: final coordinate of rarget atom
+  obj_f: final coordinate of target atom
   tor2-tor3: rotational axis
 */
   double Us[3][3], p[4];

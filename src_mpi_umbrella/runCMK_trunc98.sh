@@ -2,7 +2,7 @@
 
 #SBATCH -n 275
 #SBATCH -N 5
-#SBATCH -J replicaCMK_trunc98_new
+#SBATCH -J replicaCMK_trunc98
 #SBATCH -o replicaCMK_trunc98.out 
 #SBATCH -e replicaCMK_trunc98.err
 #SBATCH -p shakhnovich  

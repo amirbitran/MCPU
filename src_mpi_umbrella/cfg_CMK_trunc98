@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc98/files/cmk_t98_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc98/files/cmk_t98_0.100_Emin.pdb
-NATIVE_DIRECTORY		None
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc98/MultiUmbrella2
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc98/MultiUmbrella3/cmk_t98
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc98/MultiUmbrella4/cmk_t98
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -52,7 +52,7 @@ MC_STEP_SIZE			2.0
 SIDECHAIN_MOVES			1
 SIDECHAIN_NOISE			10
 USE_GLOBAL_BB_MOVES		0
-YANG_MOVE                       0.5
+YANG_MOVE                       0.0
 YANG_SCALE                      30
 USE_SIDECHAINS			1
 USE_ROTAMERS			1

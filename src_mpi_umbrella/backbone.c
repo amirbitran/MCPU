@@ -45,6 +45,15 @@ int main(int argc, char *argv[]) {
   InitializeProtein();
   for (i=0;i<nresidues;i++)
     total_ntorsions += native_residue[i].ntorsions;
+
+  if (CLUSTER_MOVE && USE_CLUSTER){
+    fprintf(STATUS, "WARNING! KNOWLEDGE MOVES ARE IMPLEMENTED! THESE DO NOT SATISFY DETAILED BALANCE!  \n ");
+  }
+  if (YANG_MOVE) {
+  	fprintf(STATUS, "WARNING! YANG (LOCAL) MOVES ARE CURRENTLY ON! ACCEPTANCE CRITERION NEEDS TO BE CORRECTED, OTHERWISE SIMULATION WILL NOT SATISFY DETAILED BALANCE \n ");
+  }
+  
+  fprintf(STATUS, "Note that if any secondary structure character is H, there's a chance that knowledge based moves (break detailed balance) are being implemented! \n");
   
   fprintf(STATUS, "Starting configuration: %s\n", native_file);
   fprintf(STATUS, "Target configuration:   %s\n", structure_file);

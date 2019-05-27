@@ -26,7 +26,7 @@ void read_cluster();
 void initialize_secstr();
 
 //========================================================================================================
-void integloop(float step_size, int *n_soln)
+void integloop(float step_size, int *n_soln) //Does a local move...based on the Dill paper
  {
   double r_n[5][3], r_a[5][3], r_c[5][3], r_o[5][3], r_s[5][MSAR][3];
   double rorg_n[5][3], rorg_a[5][3], rorg_c[5][3], rorg_o[5][3], rorg_s[5][MSAR][3];
@@ -45,7 +45,7 @@ void integloop(float step_size, int *n_soln)
 //  int s2;
   static int success = 0;
 //--------------------------------------------------------------------------------------------------------
-  *n_soln = 0;
+  *n_soln = 0; //Number of solutions to 16th degree polynomial
   step++;
 	  
   mc.loop_size = 1;
@@ -54,14 +54,13 @@ void integloop(float step_size, int *n_soln)
   total_hbond_pairs = 0;
 
   res_atomno[nresidues] = natoms;
-//  fprintf(STATUS, "info:%d %d\n", nresidues, natoms);
     
-  sel_res = (int) (threefryrand()*nresidues);
+  sel_res = (int) (threefryrand()*nresidues); //Select a residue to initialize local move
 //  sel_res = 20;
-  mc.is_phi = (int) (threefryrand()*2);
+  mc.is_phi = (int) (threefryrand()*2);  //With 50% probability, rotate about phi angle, otherwise psi angle
 //  mc.is_phi = 1;
 //fprintf(STATUS, "%f\n", deg2rad*2.);
-  step_size = YANG_SCALE*2.*deg2rad*GaussianNum();
+  step_size = YANG_SCALE*2.*deg2rad*GaussianNum(); //Magnitude  of driver rotation, in radians
 //  step_size = threefryrand()*1.0*pi - 0.5*pi;
 //  step_size = 0.;
 
@@ -69,7 +68,7 @@ void integloop(float step_size, int *n_soln)
 // residues are to be formed along (-) direction.
    {
     n0 = sel_res-3;
-    if (sel_res < 4)
+    if (sel_res < 4) //Don't make a move, since you don't have enough residues before to work with 
      {
 //      fprintf(STATUS, "Too left! n0: %d\n", n0);
       return;
@@ -140,6 +139,8 @@ void integloop(float step_size, int *n_soln)
   c_bnd_ang(r_a[2], r_c[2], r_n[3], &b_ang[4]);
   c_bnd_ang(r_c[2], r_n[3], r_a[3], &b_ang[5]);
   c_bnd_ang(r_n[3], r_a[3], r_c[3], &b_ang[6]);
+  
+//Now we call yangloop, which actually does the rotation  
   
   yangloop(r_n, r_a, r_c, r_o, r_s, ns, b_len, b_ang, n0, step_size, res_name, n_soln);
   c_bnd_len(r_a[1], r_c[1], &t_len[0]);
@@ -571,25 +572,26 @@ void yangloop(double r_n[5][3], double r_a[5][3], double r_c[5][3], double r_o[5
   c_bnd_len(r_a[2], r_s[2][0], &slen_i[1]);
   c_bnd_len(r_a[3], r_s[3][0], &slen_i[2]);
 */
-  t_ang[0] = pi;
+  t_ang[0] = pi; //The omega dihedral angle, always has value 180 degrees
   t_ang[1] = pi;
 
-  initialize_loop_closure(b_len, b_ang, t_ang);
-  solve_3pep_poly(r_n[1], r_a[1], r_a[3], r_c[3], r_soln_n, r_soln_a, r_soln_c, &n_soln_before);
-  soln_no_before = n_soln_before;
+	//First, we solve the loop closure problem for the current set of dihedrals, pre rotation
+  initialize_loop_closure(b_len, b_ang, t_ang);  //Feed this function values that are to be fixed (by basic chemistry), namely bond angles, bond lengths, and the omega dihedral angle, always 180 degrees
+  solve_3pep_poly(r_n[1], r_a[1], r_a[3], r_c[3], r_soln_n, r_soln_a, r_soln_c, &n_soln_before); //This is the function that solves the loop closture problem..Need to feed it coordinates for nitrogen/C_alpha atoms in first and third residue...see tripep_closure.h
+  soln_no_before = n_soln_before;  //Although n_soln_before is initialized to zero, its value  gets updated in the above solve_3p3_poly
   if(soln_no_before==0)
     soln_no_before=1;
   for (i=0;i<3;i++)
-    for (k=0;k<3;k++)
+    for (k=0;k<3;k++) //Keep track of the atom positions that we just computed, prior to rotation
      {
       r_n_before[i][k] = r_n[i+1][k];
       r_ca_before[i][k] = r_a[i+1][k];
       r_c_before[i][k] = r_c[i+1][k];
      }
-  loop_Jacobian(r_n_before, r_ca_before, r_c_before, &before_jacobi);
+  loop_Jacobian(r_n_before, r_ca_before, r_c_before, &before_jacobi); //Compute Jacobi pre-rotation
   jacobi_before = before_jacobi;
 
-  for (i=0;i<3;i++)
+  for (i=0;i<3;i++)  //Not totally sure what r0drms is..
     for (j=0;j<3;j++)
      {
       r0drms_n[i][j]=r_n[i+1][j];
@@ -598,9 +600,19 @@ void yangloop(double r_n[5][3], double r_a[5][3], double r_c[5][3], double r_o[5
      }
   //
 // driver angle
-  if(mc.is_phi)
+// We do a driver rotation
+// Note that the second argument of the function driver_rot is coordiate of
+//the target atom AFTER rotation, and this one is computed in the driver_rot function
+//See tripep_closure.h for what all these arguments mean
+
+/*I THINK the general idea is that the "driver" function applies a rotation either to FINAL
+phi angle of the triplet, or to the FIRST psi angle
+If the former, then we change positions of final C and Ca atoms
+If the later, we change position of first N and CA (although I had somehow thoguht these were fixed..)
+*/
+  if(mc.is_phi) //We rotate the phi dihedral, which goes from N to CA
    {
-    driver_rot(r_c[3], r1_c[3], r_a[4], r_n[4], dih_ch);
+    driver_rot(r_c[3], r1_c[3], r_a[4], r_n[4], dih_ch); //We plug in the current value of the carbon, and get the updated value (second argument) as a result of a dihedral rotation of value dih_ch...honeslty not totally clear how this works from Dill paper..
     driver_rot(r_a[3], r1_a[3], r_a[4], r_n[4], dih_ch);
     for (i=0;i<3;i++)
      {
@@ -608,7 +620,7 @@ void yangloop(double r_n[5][3], double r_a[5][3], double r_c[5][3], double r_o[5
       r_a[3][i] = r1_a[3][i];
      }
    }
-  else
+  else //psi
    {
     driver_rot(r_o[0], r1_o[0], r_a[0], r_c[0], dih_ch);
     driver_rot(r_n[1], r1_n[1], r_a[0], r_c[0], dih_ch);
@@ -621,7 +633,7 @@ void yangloop(double r_n[5][3], double r_a[5][3], double r_c[5][3], double r_o[5
      }
    }
 
-  for (i=0;i<3;i++)
+  for (i=0;i<3;i++)  //not totally sure what these for loops are doing
     for (j=0;j<3;j++)
      {
       r0_n[i][j]=r_n[i+1][j];
@@ -632,7 +644,7 @@ void yangloop(double r_n[5][3], double r_a[5][3], double r_c[5][3], double r_o[5
         r0_s[i][z][j]=r_s[i+1][z][j];
      }
 
-  solve_3pep_poly(r_n[1], r_a[1], r_a[3], r_c[3], r_soln_n, r_soln_a, r_soln_c, n_soln);
+  solve_3pep_poly(r_n[1], r_a[1], r_a[3], r_c[3], r_soln_n, r_soln_a, r_soln_c, n_soln); //Find new loop closure solution post rotation
 
      if (calc_rmsd)
       {
@@ -677,11 +689,12 @@ void yangloop(double r_n[5][3], double r_a[5][3], double r_c[5][3], double r_o[5
            exit(1);
           }
         }
-       loop_Jacobian(r_n_after, r_ca_after, r_c_after, &after_jacobi);
+        //Compute Jacobian post rotation
+       loop_Jacobian(r_n_after, r_ca_after, r_c_after, &after_jacobi); //This is probably wrong, it is passing r_soln_n (whose value is never set), likewise r_soln_a and r_soln_c..these values all need to be set...the way to set them would be to set r_n_after = r_soln_n[index, :, :], of course in C notation haha
        jacobi_after = after_jacobi;
 
 //       if(*n_soln>0)
-       if((*n_soln > 0)&&(*n_soln <= deg_pol))
+       if((*n_soln > 0)&&(*n_soln <= deg_pol)) //This is a huge clause, and I did not look at what it does, althoguh I hosuld
         {
 	 if (mc.is_phi)
 // This is the case where driver angle is res. 4. (0~4)
@@ -988,8 +1001,6 @@ void get_template()
     fprintf(STATUS, "%5d%5d%5d%5d%5d\n", i, initial_template[i], len_template[i], mod_template[i], is_template[i]);
     fflush(STATUS);
   }
-  fprintf(STATUS, "As far as BROTRAN can tell, we have reached the end of get_template \n");
-  fflush(STATUS);
   return;
  }
 

@@ -36,9 +36,10 @@ void MakeMove(Float step_size, Float use_global_bb_moves) {
   /* end wmj ********************************* */
   
 
-  do {                          /* while (sidechain_step++ < SIDECHAIN_MOVES)
-                                 * i.e. with SIDECHAIN_MOVES = 1, the loop execs twice.
-                                 */
+  do {                          /* See the last line of this clause, while (sidechain_step++ < SIDECHAIN_MOVES)
+                                 In other words, you make a backbone move first (since sidechain_step above is set to 0
+                                 Then you make however many sidechain moves as dictated by variable SIDECHAIN_MOVES
+                                 i.e. with SIDECHAIN_MOVES = 1, the loop execs twice...One backbone, one sidechain  */
 
     reject = 0;
     mc_flags.clashed = 0;
@@ -53,19 +54,20 @@ void MakeMove(Float step_size, Float use_global_bb_moves) {
 	exit(1);
       }
       
-      if (threefryrand() < CLUSTER_MOVE) {
+      //Try one of the various possible backbone moves
+      if (threefryrand() < CLUSTER_MOVE) { //Cluster_move will often be set to 0 to suppress knowledge moves
         //fprintf(STATUS, "LoopBackbondMove():\n");
-        LoopBackboneMove(step_size);
+        LoopBackboneMove(step_size); //Make a knowledge based backbone move
         use_yang = 0;
       }
       else {
-        if (YANG_MOVE && threefryrand() < YANG_MOVE) {
-	    integloop(step_size, &n_soln);
+        if (YANG_MOVE && threefryrand() < YANG_MOVE) { //Make a local move, as in Dill paper
+	    integloop(step_size, &n_soln); //See loop.h
 	    use_yang = 1;
         }
         else {
             //fprintf(STATUS, "LocalBackboneMove():\n");
-	    LocalBackboneMove(step_size);
+	    LocalBackboneMove(step_size); //Counterintuitively, this is actually a global move
 	    use_yang = 0;
         }
       } /* end (sidechain_step != 0) */
@@ -160,8 +162,31 @@ void MakeMove(Float step_size, Float use_global_bb_moves) {
       arg += dbias;
       /* end wmj ************************** */
       
+      
+      /************************  Start AB ***********************************/
+      double acceptance_crit = exp(-arg);
+      
+      //Note that if yang moves are on, in theory the acceptance criterion should have a ratio of Jacobian factors and number of solutions
+      //But I was getting nonsense results for these jacobian factors, which you can see if you use the print commands below
+      //For now I turned off this clause since it is such nonsense, and the code should always be run with YANG_MOVE = 0
+      //But in the future, this should be fixed so that the lcoal moves (yang moves) can be implemented
+      //if (use_yang == 1){
+      //acceptance_crit = acceptance_crit * (n_soln/soln_no_before) * (jacobi_after/jacobi_before); //AB changed to obey detailed balance in case local moves are used
+      //fprintf(STATUS, "jacobi_after = %7.3f, jacobi_before = %7.3f, dE/MC_TEMP = %7.3f, acceptance criterion is %7.3f \n", jacobi_after, jacobi_before, arg, acceptance_crit);
+      //if (acceptance_crit>=1 || threefryrand() < acceptance_crit){
+      //fprintf(STATUS, "Move may have been accepted \n");
+      //};
+      //}
+      /*End AB*/
+      
       /* Metropolis */
-      if (arg <= 0 || threefryrand() < exp(-arg)){
+      
+      /*AB commented out: */
+      //if (arg <= 0 || threefryrand() < exp(-arg)){
+      
+      /*AB replaced the above with*/
+      if (acceptance_crit >=1 || threefryrand() < acceptance_crit){
+	//end AB
 	Update();
 	natives=new_natives;
         //fprintf(STATUS, "Updated ...\n");
@@ -247,6 +272,7 @@ void LocalBackboneMove(Float step_size) {
 }
 
 void LoopBackboneMove(Float absolute_step_size) {
+/*Contrary to the naming, this one actually does the knowledge based move*/
 
   int a, b, c, d, i, j;
   Float step_phi, step_psi;
@@ -329,8 +355,10 @@ void LoopBackboneMove(Float absolute_step_size) {
         if (use_cluster > threefryrand()) {
           step_phi = desire_phi - cur_phi[mc.selected[i]-1];
           step_phi += GaussianNum()*CLUSTER_NOISE;
+        //fprintf(STATUS, "Did a knowledge based move!!\n", secstr[mc.selected[i]]);
         }
         else
+          //fprintf(STATUS, "LoopMove called, but no knowledge based move done\n");
           step_phi = GaussianNum()*CLUSTER_NOISE;
 	step_phi *= deg2rad;
 //	fprintf(STATUS, "%f\n", step_size);
@@ -350,8 +378,10 @@ void LoopBackboneMove(Float absolute_step_size) {
          {
           step_psi = desire_psi - cur_psi[mc.selected[i]-1];
           step_psi += GaussianNum()*CLUSTER_NOISE;
+          //fprintf(STATUS, "Did a knowledge based move!!\n", secstr[mc.selected[i]]);
          }
         else
+          //fprintf(STATUS, "LoopMove called, but no knowledge based move done\n");
           step_psi = GaussianNum()*CLUSTER_NOISE;
 	step_psi *= deg2rad;
 	

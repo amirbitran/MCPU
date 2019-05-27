@@ -6,7 +6,7 @@ STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME_trunc
 NATIVE_DIRECTORY		None
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME_trunc50/unfolding2/rsme_t50
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME_trunc50/unfolding/rsme_t50
 PROTEIN_NAME			p1afvA
 !!
 !!

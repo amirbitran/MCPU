@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/files/1igd_0.200_20_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/files/1igd_0.200_20_Emin.pdb
-NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/MultiUmbrella11
+NATIVE_DIRECTORY		None
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/MultiUmbrella12/1igd
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/test/1igd
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -45,7 +45,7 @@ MAX_EXCHANGE                    75
 !!
 MC_TEMP_MIN			0.2 
 TEMP_STEP			0.025
-NODES_PER_TEMP		5
+NODES_PER_TEMP		1
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0

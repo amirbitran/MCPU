@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_trunc32/files/marr_t32_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_trunc32/files/marr_t32_0.100_Emin.pdb
-NATIVE_DIRECTORY		None
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_trunc32/MultiUmbrella
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_trunc32/MultiUmbrella/marr_t32
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_trunc32/Jtest/marr_t32
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -41,7 +41,7 @@ MC_PRINT_STEPS			500000
 MC_REPLICA_STEPS                10000
 MAX_EXCHANGE                    75
 !!
-!! SIMULATION PARAMETERS
+!! SIMULATION PARAMETERS--NODES_PER_TEMP WAS PREVIOUSLY 13
 !!
 MC_TEMP_MIN			0.400
 TEMP_STEP			0.025

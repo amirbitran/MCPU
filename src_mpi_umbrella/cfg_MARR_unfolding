@@ -6,7 +6,7 @@ STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files
 NATIVE_DIRECTORY		None
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/unfolding5/marr
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/unfoldingTEST/marr
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -43,9 +43,9 @@ MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.95
+MC_TEMP_MIN			0.85
 TEMP_STEP			0.025
-NODES_PER_TEMP		50
+NODES_PER_TEMP		1
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0

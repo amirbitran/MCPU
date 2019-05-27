@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/rsme_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/files/rsme_0.100_Emin.pdb
-NATIVE_DIRECTORY		None
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/starting_files_config_e
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/unfolding2/rsme
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME/unfolding3/rsme
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -43,7 +43,7 @@ MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.925
+MC_TEMP_MIN			0.85
 TEMP_STEP			0.025
 NODES_PER_TEMP		60
 ALPHA				0.75

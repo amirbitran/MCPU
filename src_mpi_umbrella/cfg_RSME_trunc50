@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME_trunc50/files/rsme_t50_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME_trunc50/files/rsme_t50_0.100_Emin.pdb
-NATIVE_DIRECTORY		None
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME_trunc50/MultiUmbrella2
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME_trunc50/MultiUmbrella/rsme_t50
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/RSME_trunc50/Jtest/rsme_t50
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -30,7 +30,7 @@ SKIP_BB_CONTACT_RANGE		1000
 !! MONTE-CARLO PARAMETERS
 !!
 !!
-MC_STEPS			300000000
+MC_STEPS			200000000
 MC_ANNEAL_STEPS 		200235235325235000000
 MC_PDB_PRINT_STEPS		500000
 PRINT_PDB			1
@@ -41,11 +41,11 @@ MC_PRINT_STEPS			500000
 MC_REPLICA_STEPS                10000
 MAX_EXCHANGE                    75
 !!
-!! SIMULATION PARAMETERS
+!! SIMULATION PARAMETERS--NODES PER TEMP PREVIOUSLY 9
 !!
 MC_TEMP_MIN			0.400
 TEMP_STEP			0.025
-NODES_PER_TEMP		9
+NODES_PER_TEMP		1
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0

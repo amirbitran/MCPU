@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc63/files/fabg_t63_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc63/files/fabg_t63_0.100_Emin.pdb
-NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc63/MultiUmbrella4
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc63/MultiUmbrella5
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc63/MultiUmbrella5/fabg_t63
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc63/Jtest/fabg_t63
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -30,7 +30,7 @@ SKIP_BB_CONTACT_RANGE		1000
 !! MONTE-CARLO PARAMETERS
 !!
 !!
-MC_STEPS			100000000
+MC_STEPS			200000000
 MC_ANNEAL_STEPS 		200000000
 MC_PDB_PRINT_STEPS		500000
 PRINT_PDB			1
@@ -41,7 +41,7 @@ MC_PRINT_STEPS			500000
 MC_REPLICA_STEPS                10000
 MAX_EXCHANGE                    75
 !!
-!! SIMULATION PARAMETERS
+!! SIMULATION PARAMETERS--NODES PER TEMP PREVIOUSLY 13, YANG MOVE PREVIOULSY 0.5
 !!
 MC_TEMP_MIN			0.400
 TEMP_STEP			0.025
@@ -52,7 +52,7 @@ MC_STEP_SIZE			2.0
 SIDECHAIN_MOVES			1
 SIDECHAIN_NOISE			10
 USE_GLOBAL_BB_MOVES		0
-YANG_MOVE                       0.5
+YANG_MOVE                       0.0
 YANG_SCALE                      30
 USE_SIDECHAINS			1
 USE_ROTAMERS			1

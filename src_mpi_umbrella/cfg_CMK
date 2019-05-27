@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK/files/cmk_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK/files/cmk_0.100_Emin.pdb
-NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK/Premature
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK/MultiUmbrella3
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK/MultiUmbrella3/cmk
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK/MultiUmbrella4/cmk
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -30,7 +30,7 @@ SKIP_BB_CONTACT_RANGE		1000
 !! MONTE-CARLO PARAMETERS
 !!
 !!
-MC_STEPS			50000000
+MC_STEPS			200000000
 MC_ANNEAL_STEPS 		200000000
 MC_PDB_PRINT_STEPS		500000
 PRINT_PDB			1
@@ -52,7 +52,7 @@ MC_STEP_SIZE			2.0
 SIDECHAIN_MOVES			1
 SIDECHAIN_NOISE			10
 USE_GLOBAL_BB_MOVES		0
-YANG_MOVE                       0.5
+YANG_MOVE                       0.0
 YANG_SCALE                      30
 USE_SIDECHAINS			1
 USE_ROTAMERS			1

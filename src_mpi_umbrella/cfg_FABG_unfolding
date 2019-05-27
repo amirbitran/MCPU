@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG/files/fabg_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG/files/fabg_0.100_Emin.pdb
-NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG/starting_files_config_1111010000*
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG/starting_files_config_ac
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG/unfolding10/fabg
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG/Unfolding4/fabg
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -41,7 +41,7 @@ MC_PRINT_STEPS			500000
 MC_REPLICA_STEPS                10000000000000000000000000
 MAX_EXCHANGE                    75
 !!
-!! SIMULATION PARAMETERS
+!! SIMULATION PARAMETERS--NOTE YANG_MOVE WAS PREVIOUSLY 0.5
 !!
 MC_TEMP_MIN			0.850
 TEMP_STEP			0.025
@@ -52,7 +52,7 @@ MC_STEP_SIZE			2.0
 SIDECHAIN_MOVES			1
 SIDECHAIN_NOISE			10
 USE_GLOBAL_BB_MOVES		0
-YANG_MOVE                       0.5
+YANG_MOVE                       0.0
 YANG_SCALE                      30
 USE_SIDECHAINS			1
 USE_ROTAMERS			1

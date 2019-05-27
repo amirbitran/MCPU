@@ -1,7 +1,7 @@
 #include "define.h"
 #include "misc_util.h"
 Float rot_mat[3][3];            /* this is used in vector.h
-                                 * it's beyond me why all variables are globally defined in this file
+                                 
                                  */
 #include "vector.h"
 #include "atom.h"
