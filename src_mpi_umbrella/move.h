@@ -168,8 +168,8 @@ void MakeMove(Float step_size, Float use_global_bb_moves) {
       
 	  //Jacobi fix implemented 7/17 by AB
       if (use_yang == 1){
-      acceptance_crit = acceptance_crit * (n_soln/soln_no_before) * (jacobi_after/jacobi_before); //AB changed to obey detailed balance in case local moves are used
-      fprintf(STATUS, "jacobi_after = %7.3f, jacobi_before = %7.3f, dE/MC_TEMP = %7.3f, acceptance criterion is %7.3f \n", jacobi_after, jacobi_before, arg, acceptance_crit);
+      acceptance_crit = acceptance_crit * (n_soln/(double)soln_no_before) * (jacobi_after/jacobi_before); //AB changed to obey detailed balance in case local moves are used
+      //fprintf(STATUS, "jacobi_after = %7.3f, jacobi_before = %7.3f, n_solutions_after = %i, n_solutions_before = %i, dE/MC_TEMP = %7.3f, acceptance criterion is %7.5f \n", jacobi_after, jacobi_before, n_soln, soln_no_before,arg, acceptance_crit);
       //if (acceptance_crit>=1 || threefryrand() < acceptance_crit){
       //fprintf(STATUS, "Move may have been accepted \n");
       //};
@@ -183,6 +183,10 @@ void MakeMove(Float step_size, Float use_global_bb_moves) {
       
       /*AB replaced the above with*/
       if (acceptance_crit >=1 || threefryrand() < acceptance_crit){
+	//if (use_yang ==1){
+	//fprintf(STATUS, "Move accepted \n");
+	//}
+	
 	//end AB
 	Update();
 	natives=new_natives;
