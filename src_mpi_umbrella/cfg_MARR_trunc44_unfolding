@@ -6,20 +6,20 @@ STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_trunc
 NATIVE_DIRECTORY		None
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_trunc44/unfolding7/marr_t44
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR_trunc44/UnfoldingGo2/marr_t44
 PROTEIN_NAME			p1afvA
 !!
 !!
-!! POTENTIAL PARAMETERS!!
+!! POTENTIAL PARAMETERS--NOTE GO IS ON!!!!
 !!
 NO_NEW_CLASHES			1
 READ_POTENTIAL 			1Lfb
-USE_GO_POTENTIAL		0
+USE_GO_POTENTIAL		1
 CLASH_WEIGHT			0
 RMS_WEIGHT			0
 HYDROGEN_BOND			-2
-NATIVE_ATTRACTION		0
-NON_NATIVE_REPULSION		0
+NATIVE_ATTRACTION		-1.2
+NON_NATIVE_REPULSION		0.2
 NON_SPECIFIC_ENERGY 		0
 !!
 !! CONTACT DEFINITION
@@ -43,16 +43,16 @@ MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.850
+MC_TEMP_MIN			0.800
 TEMP_STEP			0.025
-NODES_PER_TEMP		50
+NODES_PER_TEMP		60
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0
 SIDECHAIN_MOVES			1
 SIDECHAIN_NOISE			10
 USE_GLOBAL_BB_MOVES		0
-YANG_MOVE                       0.5
+YANG_MOVE                       0.0
 YANG_SCALE                      30
 USE_SIDECHAINS			1
 USE_ROTAMERS			1

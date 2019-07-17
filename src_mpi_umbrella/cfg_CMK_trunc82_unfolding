@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc82/files/cmk_t82_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc82/files/cmk_t82_0.100_Emin.pdb
-NATIVE_DIRECTORY		None
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc82/starting_files_config_acde
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc82/Unfolding/cmk_t82
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/CMK_trunc82/Unfolding2/cmk_t82
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -43,7 +43,7 @@ MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.800
+MC_TEMP_MIN			0.925
 TEMP_STEP			0.025
 NODES_PER_TEMP		100
 ALPHA				0.75

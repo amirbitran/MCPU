@@ -646,7 +646,7 @@ If the later, we change position of first N and CA (although I had somehow thogu
 
   solve_3pep_poly(r_n[1], r_a[1], r_a[3], r_c[3], r_soln_n, r_soln_a, r_soln_c, n_soln); //Find new loop closure solution post rotation
 
-     if (calc_rmsd)
+     if (calc_rmsd)  //This clause is ridiculous since calc_rmsd is initialized to 1 before so will always be true...but it's an important clause since in it, you choose the solution to accept etc...this can be cleaned up but I didn't want to mess with code too much...
       {
        for (k=0;k<*n_soln;k++)
         {
@@ -689,12 +689,10 @@ If the later, we change position of first N and CA (although I had somehow thogu
            exit(1);
           }
         }
-        //Compute Jacobian post rotation
-       loop_Jacobian(r_n_after, r_ca_after, r_c_after, &after_jacobi); //This is probably wrong, it is passing r_soln_n (whose value is never set), likewise r_soln_a and r_soln_c..these values all need to be set...the way to set them would be to set r_n_after = r_soln_n[index, :, :], of course in C notation haha
-       jacobi_after = after_jacobi;
+        //AB decided to move the Jacobi calculation to later, at which point there is a loop that naturlaly allows r_n_after etc to be defined
 
 //       if(*n_soln>0)
-       if((*n_soln > 0)&&(*n_soln <= deg_pol)) //This is a huge clause, and I did not look at what it does, althoguh I hosuld
+       if((*n_soln > 0)&&(*n_soln <= deg_pol)) //This is a huge clause, and I did not look at what it does, althoguh I should
         {
 	 if (mc.is_phi)
 // This is the case where driver angle is res. 4. (0~4)
@@ -806,114 +804,16 @@ If the later, we change position of first N and CA (although I had somehow thogu
 	   get_rot(rot2_o[1], r_soln_o[index][1], r_soln_a[index][2], r_soln_n[index][2], r_soln_c[index][1], rot2_a[1], r_soln_a[index][1]);
 	  }
 
-/*	 fprintf(STATUS, "\n");
-         c_bnd_len(r_soln_a[index][0], r_soln_c[index][0], &len_f[0]);
-         c_bnd_len(r_soln_c[index][0], r_soln_n[index][1], &len_f[1]);
-         c_bnd_len(r_soln_n[index][1], r_soln_a[index][1], &len_f[2]);
-         c_bnd_len(r_soln_a[index][1], r_soln_c[index][1], &len_f[3]);
-         c_bnd_len(r_soln_c[index][1], r_soln_n[index][2], &len_f[4]);
-         c_bnd_len(r_soln_n[index][2], r_soln_a[index][2], &len_f[5]);
-         fprintf(STATUS, "len0: %9.5f%9.5f\n", b_len[0], len_f[0]);
-         fprintf(STATUS, "len1: %9.5f%9.5f\n", b_len[1], len_f[1]);
-         fprintf(STATUS, "len2: %9.5f%9.5f\n", b_len[2], len_f[2]);
-         fprintf(STATUS, "len3: %9.5f%9.5f\n", b_len[3], len_f[3]);
-         fprintf(STATUS, "len4: %9.5f%9.5f\n", b_len[4], len_f[4]);
-         fprintf(STATUS, "len5: %9.5f%9.5f\n", b_len[5], len_f[5]);
-  
-	 fprintf(STATUS, "\n");
-         c_bnd_ang(r_soln_n[index][0], r_soln_a[index][0], r_soln_c[index][0], &ang_f[0]);
-         c_bnd_ang(r_soln_a[index][0], r_soln_c[index][0], r_soln_n[index][1], &ang_f[1]);
-         c_bnd_ang(r_soln_c[index][0], r_soln_n[index][1], r_soln_a[index][1], &ang_f[2]);
-         c_bnd_ang(r_soln_n[index][1], r_soln_a[index][1], r_soln_c[index][1], &ang_f[3]);
-         c_bnd_ang(r_soln_a[index][1], r_soln_c[index][1], r_soln_n[index][2], &ang_f[4]);
-         c_bnd_ang(r_soln_c[index][1], r_soln_n[index][2], r_soln_a[index][2], &ang_f[5]);
-         c_bnd_ang(r_soln_n[index][2], r_soln_a[index][2], r_soln_c[index][2], &ang_f[6]);
-         fprintf(STATUS, "ang0: %9.3f%9.3f\n", b_ang[0]*rad2deg, ang_f[0]*rad2deg);
-         fprintf(STATUS, "ang1: %9.3f%9.3f\n", b_ang[1]*rad2deg, ang_f[1]*rad2deg);
-         fprintf(STATUS, "ang2: %9.3f%9.3f\n", b_ang[2]*rad2deg, ang_f[2]*rad2deg);
-         fprintf(STATUS, "ang3: %9.3f%9.3f\n", b_ang[3]*rad2deg, ang_f[3]*rad2deg);
-         fprintf(STATUS, "ang4: %9.3f%9.3f\n", b_ang[4]*rad2deg, ang_f[4]*rad2deg);
-         fprintf(STATUS, "ang5: %9.3f%9.3f\n", b_ang[5]*rad2deg, ang_f[5]*rad2deg);
-         fprintf(STATUS, "ang6: %9.3f%9.3f\n", b_ang[6]*rad2deg, ang_f[6]*rad2deg);
-  
-         c_bnd_len(r_soln_c[index][0], r_soln_o[index][0], &olen_f[0]);
-         c_bnd_len(r_soln_c[index][1], r_soln_o[index][1], &olen_f[1]);
-         c_bnd_len(r_soln_c[index][2], r_soln_o[index][2], &olen_f[2]);
-         c_bnd_len(r_soln_a[index][0], r_soln_s[0][0], &slen_f[0]);
-         c_bnd_len(r_soln_a[index][1], r_soln_s[1][0], &slen_f[1]);
-         c_bnd_len(r_soln_a[index][2], r_soln_s[2][0], &slen_f[2]);
-         fprintf(STATUS, "\nlen_o0: %9.3f%9.3f\n", olen_i[0], olen_f[0]);
-         fprintf(STATUS, "len_o1: %9.3f%9.3f\n", olen_i[1], olen_f[1]);
-         fprintf(STATUS, "len_o2: %9.3f%9.3f\n", olen_i[2], olen_f[2]);
-	 if(strcmp(native_residue[n0].res, "GLY")!=0)
-           fprintf(STATUS, "\nlen_s0: %9.3f%9.3f\n", slen_i[0], slen_f[0]);
-	 if(strcmp(native_residue[n0+1].res, "GLY")!=0)
-           fprintf(STATUS, "len_s1: %9.3f%9.3f\n", slen_i[1], slen_f[1]);
-	 if(strcmp(native_residue[n0+2].res, "GLY")!=0)
-           fprintf(STATUS, "len_s2: %9.3f%9.3f\n", slen_i[2], slen_f[2]);
-  
-	 fprintf(STATUS, "\n");
-	 c_bnd_ang(r0_a[0], r0_c[0], r0_o[0], &oang_i);
-	 c_bnd_ang(r_soln_a[index][0], r_soln_c[index][0], r_soln_o[index][0], &oang_f);
-	 fprintf(STATUS, "ang1_o0:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-	 c_bnd_ang(r0_n[1], r0_c[0], r0_o[0], &oang_i);
-	 c_bnd_ang(r_soln_n[index][1], r_soln_c[index][0], r_soln_o[index][0], &oang_f);
-	 fprintf(STATUS, "ang2_o0:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-	 c_bnd_ang(r0_a[1], r0_c[1], r0_o[1], &oang_i);
-	 c_bnd_ang(r_soln_a[index][1], r_soln_c[index][1], r_soln_o[index][1], &oang_f);
-	 fprintf(STATUS, "ang1_o1:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-*/  //	 c_bnd_ang(r0_n[2], r0_c[1], r0_o[1], &oang_i);
-//	 c_bnd_ang(r_soln_n[index][2], r_soln_c[index][1], r_soln_o[index][1], &oang_f);
-//	 fprintf(STATUS, "ang2_o1:             %9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-/*	 c_bnd_ang(r0_a[2], r0_c[2], r0_o[2], &oang_i);
-	 c_bnd_ang(r_soln_a[index][2], r_soln_c[index][2], r_soln_o[index][2], &oang_f);
-	 fprintf(STATUS, "ang1_o2:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-	 c_bnd_ang(r_n[4], r0_c[2], r0_o[2], &oang_i);
-	 c_bnd_ang(r_n[4], r_soln_c[index][2], r_soln_o[index][2], &oang_f);
-	 fprintf(STATUS, "ang2_o2:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-
-	 fprintf(STATUS, "\n");
-	 c_bnd_ang(r0_n[0], r0_a[0], r0_s[0][0], &oang_i);
-	 c_bnd_ang(r_soln_n[index][0], r_soln_a[index][0], r_soln_s[0][0], &oang_f);
-	 if(strcmp(native_residue[n0].res, "GLY")!=0)
-	   fprintf(STATUS, "ang1_s0:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-	 c_bnd_ang(r0_c[0], r0_a[0], r0_s[0][0], &oang_i);
-	 c_bnd_ang(r_soln_c[index][0], r_soln_a[index][0], r_soln_s[0][0], &oang_f);
-	 if(strcmp(native_residue[n0].res, "GLY")!=0)
-	   fprintf(STATUS, "ang2_s0:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-	 c_bnd_ang(r0_n[1], r0_a[1], r0_s[1][0], &oang_i);
-	 c_bnd_ang(r_soln_n[index][1], r_soln_a[index][1], r_soln_s[1][0], &oang_f);
-	 if(strcmp(native_residue[n0+1].res, "GLY")!=0)
-	   fprintf(STATUS, "ang1_s1:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-	 c_bnd_ang(r0_c[1], r0_a[1], r0_s[1][0], &oang_i);
-	 c_bnd_ang(r_soln_c[index][1], r_soln_a[index][1], r_soln_s[1][0], &oang_f);
-	 if(strcmp(native_residue[n0+1].res, "GLY")!=0)
-	   fprintf(STATUS, "ang2_s1:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-	 c_bnd_ang(r0_n[2], r0_a[2], r0_s[2][0], &oang_i);
-	 c_bnd_ang(r_soln_n[index][2], r_soln_a[index][2], r_soln_s[2][0], &oang_f);
-	 if(strcmp(native_residue[n0+2].res, "GLY")!=0)
-	   fprintf(STATUS, "ang1_s2:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-	 c_bnd_ang(r0_c[2], r0_a[2], r0_s[2][0], &oang_i);
-	 c_bnd_ang(r_soln_c[index][2], r_soln_a[index][2], r_soln_s[2][0], &oang_f);
-	 if(strcmp(native_residue[n0+2].res, "GLY")!=0)
-	   fprintf(STATUS, "ang1_s2:%9.3f%9.3f\n", oang_i*rad2deg, oang_f*rad2deg);
-*/	 
-//	 c_bnd_ang(r0_s[1][0], r0_s[1][1], r0_s[1][2], &oang_i);
-//	 c_bnd_ang(r_soln_s[1][0], r_soln_s[1][1], r_soln_s[1][2], &oang_f);
-//	 if((strcmp(res_name[2], "GLY")!=0) &&(ns[2] >= 3))
-//	  {
-//	   fprintf(STATUS, "s1: x_i(0, 1, 2): %9.5f%9.5f%9.5f\n", r0_s[1][0][0], r0_s[1][1][0], r0_s[1][2][0]);
-//	   fprintf(STATUS, "s1: x_f(0, 1, 2): %9.5f%9.5f%9.5f\n", r_soln_s[1][0][0], r_soln_s[1][1][0], r_soln_s[1][2][0]);
-//	   fprintf(STATUS, "s1: y_i(0, 1, 2): %9.5f%9.5f%9.5f\n", r0_s[1][0][1], r0_s[1][1][1], r0_s[1][2][1]);
-//	   fprintf(STATUS, "s1: y_f(0, 1, 2): %9.5f%9.5f%9.5f\n", r_soln_s[1][0][1], r_soln_s[1][1][1], r_soln_s[1][2][1]);
-//	   fprintf(STATUS, "s1: z_i(0, 1, 2): %9.5f%9.5f%9.5f\n", r0_s[1][0][2], r0_s[1][1][2], r0_s[1][2][2]);
-//	   fprintf(STATUS, "s1: z_f(0, 1, 2): %9.5f%9.5f%9.5f\n", r_soln_s[1][0][2], r_soln_s[1][1][2], r_soln_s[1][2][2]);
-//	   fprintf(STATUS, "res: %s  s1: ang_side(0, 1, 2): %9.3f%9.3f\n", res_name[2], oang_i*rad2deg, oang_f*rad2deg);
-//	  }
-
          for (i=0;i<3;i++)
 	   for (j=0;j<3;j++)
 	    {
+	    //The first three are added by AB on July 15 2019
+	     r_n_after[i][j] = r_soln_n[index][i][j];
+	     r_ca_after[i][j] = r_soln_a[index][i][j];
+	     r_c_after[i][j] = r_soln_c[index][i][j];
+	     //end AB
+	     
+	    
 	     r_n[i+1][j] = r_soln_n[index][i][j];
 	     r_a[i+1][j] = r_soln_a[index][i][j];
 	     r_c[i+1][j] = r_soln_c[index][i][j];
@@ -924,6 +824,11 @@ If the later, we change position of first N and CA (although I had somehow thogu
 	 
         }
       }
+
+
+       loop_Jacobian(r_n_after, r_ca_after, r_c_after, &after_jacobi);
+       jacobi_after = after_jacobi;
+
 
   return;
  }

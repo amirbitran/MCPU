@@ -166,17 +166,14 @@ void MakeMove(Float step_size, Float use_global_bb_moves) {
       /************************  Start AB ***********************************/
       double acceptance_crit = exp(-arg);
       
-      //Note that if yang moves are on, in theory the acceptance criterion should have a ratio of Jacobian factors and number of solutions
-      //But I was getting nonsense results for these jacobian factors, which you can see if you use the print commands below
-      //For now I turned off this clause since it is such nonsense, and the code should always be run with YANG_MOVE = 0
-      //But in the future, this should be fixed so that the lcoal moves (yang moves) can be implemented
-      //if (use_yang == 1){
-      //acceptance_crit = acceptance_crit * (n_soln/soln_no_before) * (jacobi_after/jacobi_before); //AB changed to obey detailed balance in case local moves are used
-      //fprintf(STATUS, "jacobi_after = %7.3f, jacobi_before = %7.3f, dE/MC_TEMP = %7.3f, acceptance criterion is %7.3f \n", jacobi_after, jacobi_before, arg, acceptance_crit);
+	  //Jacobi fix implemented 7/17 by AB
+      if (use_yang == 1){
+      acceptance_crit = acceptance_crit * (n_soln/soln_no_before) * (jacobi_after/jacobi_before); //AB changed to obey detailed balance in case local moves are used
+      fprintf(STATUS, "jacobi_after = %7.3f, jacobi_before = %7.3f, dE/MC_TEMP = %7.3f, acceptance criterion is %7.3f \n", jacobi_after, jacobi_before, arg, acceptance_crit);
       //if (acceptance_crit>=1 || threefryrand() < acceptance_crit){
       //fprintf(STATUS, "Move may have been accepted \n");
       //};
-      //}
+      }
       /*End AB*/
       
       /* Metropolis */

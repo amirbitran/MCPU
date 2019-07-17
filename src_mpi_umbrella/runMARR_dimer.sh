@@ -6,7 +6,7 @@
 #SBATCH -o replicaMARR_dimer.out 
 #SBATCH -e replicaMARR_dimer.err
 #SBATCH -p shakhnovich 
-#SBATCH --mem=85000 
+#SBATCH --mem=95000 
 #SBATCH --mail-type=ALL
 #SBATCH -t 7-00:00
 #SBATCH --mail-user=amirbitran@g.harvard.edu

@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc116/files/fabg_t116_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc116/files/fabg_t116_0.100_Emin.pdb
-NATIVE_DIRECTORY		None
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc116/starting_files_config_ac
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc116/Unfolding/fabg_t116
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/FABG_trunc116/Unfolding2/fabg_t116
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -45,7 +45,7 @@ MAX_EXCHANGE                    75
 !!
 MC_TEMP_MIN			0.850
 TEMP_STEP			0.025
-NODES_PER_TEMP		60
+NODES_PER_TEMP		100
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0

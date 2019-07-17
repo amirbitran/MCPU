@@ -1,0 +1,18 @@
+[[6114,1],170][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 1913780 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],184][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 1981980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],171][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 1a8b980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],180][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 13a7980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],177][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 157b980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],183][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 1c21980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],181][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 12c4980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],179][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 1918980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],172][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 10c4980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],185][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 15e7980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],182][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 1968980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],173][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 1a52980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],178][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id ccf980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],176][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 2727980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],175][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 1cdc980 opcode 1  vendor error 129 qp_idx 0
+[[6114,1],174][btl_openib_component.c:3531:handle_wc] from holy2a15206 to: holy2a15205 error polling LP CQ with status RETRY EXCEEDED ERROR status number 12 for wr_id 2657980 opcode 1  vendor error 129 qp_idx 0
+[holy2a15203.rc.fas.harvard.edu:54501] 15 more processes have sent help message help-mpi-btl-openib.txt / pp retry exceeded
+[holy2a15203.rc.fas.harvard.edu:54501] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages

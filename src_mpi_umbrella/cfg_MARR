@@ -3,23 +3,23 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/marr_0.100_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/files/marr_0.100_Emin.pdb
-NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/MultiUmbrella3
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/MultiUmbrellaGo4
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/Jtest/marr
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/MARR/MultiUmbrellaGo5/marr
 PROTEIN_NAME			p1afvA
 !!
 !!
-!! POTENTIAL PARAMETERS--When GO is on, I set native attraction to -1.2, native repulsion to 0.2, and use_go_potential to 1
+!! POTENTIAL PARAMETERS--NOTE GO IS ONE!! When GO is on, I set native attraction to -1.2, native repulsion to 0.2, and use_go_potential to 1
 !!
 NO_NEW_CLASHES			1
 READ_POTENTIAL 			1Lfb
-USE_GO_POTENTIAL		0
+USE_GO_POTENTIAL		1
 CLASH_WEIGHT			0
 RMS_WEIGHT			0
 HYDROGEN_BOND			-2
-NATIVE_ATTRACTION		0
-NON_NATIVE_REPULSION		0
+NATIVE_ATTRACTION		-1.2
+NON_NATIVE_REPULSION		0.2
 NON_SPECIFIC_ENERGY 		0
 !!
 !! CONTACT DEFINITION
@@ -43,7 +43,7 @@ MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS--NODES_PER_TEMP WAS PREVIOUSLY 16
 !!
-MC_TEMP_MIN			0.400
+MC_TEMP_MIN			0.6
 TEMP_STEP			0.025
 NODES_PER_TEMP		16
 ALPHA				0.75
@@ -52,7 +52,7 @@ MC_STEP_SIZE			2.0
 SIDECHAIN_MOVES			1
 SIDECHAIN_NOISE			10
 USE_GLOBAL_BB_MOVES		0
-YANG_MOVE                       0.5
+YANG_MOVE                       0.0
 YANG_SCALE                      30
 USE_SIDECHAINS			1
 USE_ROTAMERS			1
