@@ -3,10 +3,10 @@
 !!
 NATIVE_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/files/1igd_0.200_20_Emin.pdb
 STRUCTURE_FILE  		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/files/1igd_0.200_20_Emin.pdb
-NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/Starting_files_config_abc
+NATIVE_DIRECTORY		/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/Refold_from_cd
 TEMPLATE_FILE  			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/DHFR/files/nothing.template 
 ALIGNMENT_FILE  		1lfb	
-PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/Unfolding5/1igd
+PDB_OUT_FILE			/n/shakfs1/users/amirbitran/ShakhnovichLab/MCPU/sim/1igd/Refold_from_cd/1igd
 PROTEIN_NAME			p1afvA
 !!
 !!
@@ -43,9 +43,9 @@ MAX_EXCHANGE                    75
 !!
 !! SIMULATION PARAMETERS
 !!
-MC_TEMP_MIN			0.900
+MC_TEMP_MIN			0.750
 TEMP_STEP			0.025
-NODES_PER_TEMP		120
+NODES_PER_TEMP		60
 ALPHA				0.75
 LAMBDA				1.8
 MC_STEP_SIZE			2.0

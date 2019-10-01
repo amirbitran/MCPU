@@ -28,8 +28,10 @@
 #define ARO_WEIGHT	5.0
 #define AROMATIC_DISTANCE	7.0
 
-#define CLUSTER_MOVE		0.33  //originally 0.3333 
-#define USE_CLUSTER		0.0       // 0.0 to turn knowledge based moves off, was 0.1 originally (knowledge moves on)
+//AB moved all the following to backbone.h and defined as proper variables...
+//#define CLUSTER_MOVE		0.33  //originally 0.3333 
+//#define USE_CLUSTER		0.0       // 0.0 to turn knowledge based moves off, was 0.1 originally (knowledge moves on)
+//#define MAX_CLUSTERSTEP 0  //Added by AB...all MC steps after this will always have USE_CLUSTER set to 0
 #define NOCLUSTERS		30
 #define CLUSTER_NOISE		10.
 

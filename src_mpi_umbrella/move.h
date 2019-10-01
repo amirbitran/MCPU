@@ -356,7 +356,7 @@ void LoopBackboneMove(Float absolute_step_size) {
         if (use_cluster > threefryrand()) {
           step_phi = desire_phi - cur_phi[mc.selected[i]-1];
           step_phi += GaussianNum()*CLUSTER_NOISE;
-        //fprintf(STATUS, "Did a knowledge based move!!\n", secstr[mc.selected[i]]);
+        //fprintf(STATUS, "Did a knowledge based move at step %10ld !!\n", mcstep);
         }
         else
           //fprintf(STATUS, "LoopMove called, but no knowledge based move done\n");
@@ -379,6 +379,7 @@ void LoopBackboneMove(Float absolute_step_size) {
          {
           step_psi = desire_psi - cur_psi[mc.selected[i]-1];
           step_psi += GaussianNum()*CLUSTER_NOISE;
+          //fprintf(STATUS, "Did a knowledge based move at step %10ld !!\n", mcstep);
           //fprintf(STATUS, "Did a knowledge based move!!\n", secstr[mc.selected[i]]);
          }
         else
@@ -403,6 +404,7 @@ void LoopBackboneMove(Float absolute_step_size) {
          {
           step_psi = desire_psi - cur_psi[mc.selected[i]-1];
           step_psi += GaussianNum()*CLUSTER_NOISE;
+          //fprintf(STATUS, "Did a knowledge based move at step %10ld !!\n", mcstep);
          }
         else
           step_psi = GaussianNum()*CLUSTER_NOISE;

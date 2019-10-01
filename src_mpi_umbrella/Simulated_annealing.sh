@@ -5,7 +5,7 @@
 #second input should be protein root in lower case (ex. fabg)
 
 
-#Assumes each temperature runs for 200 million MC steps
+#Assumes each temperature runs for 2 million MC steps
 
 protein=$1
 protein_root=$2

@@ -1428,6 +1428,12 @@ void SetProgramOptions(int argc, char *argv[]) {
       	min_seq_sep = (int) value; 
       else if (!strcmp(token, "CONTACT_CALPHA_CUTOFF"))
       	contact_calpha_cutoff = value; //note that by default, this value is set to 7 in backbone.h, unless you enter something in cfg file
+      else if (!strcmp(token, "USE_CLUSTER")) //With what probability should code use a knowledge based move?
+      	USE_CLUSTER = value; //note that by default, this value is set to 0 in backbone.h, unless you enter something in cfg file
+      else if (!strcmp(token, "MAX_CLUSTERSTEP")) //As of what MC should knowledge based moves be stopped?
+      	MAX_CLUSTERSTEP = value; //note that by default, this value is set to 0 in backbone.h, unless you enter something in cfg file
+      else if (!strcmp(token, "CLUSTER_MOVE")) //How often do you call the loopmove function? This does not mean you do a knowledge move
+      	CLUSTER_MOVE = value; //note that by default, this value is set to 0.33 in backbone.h, unless you enter something in cfg file
 	  else {
 		printf("config file option not found: %s\n", token);
 	//exit(0);

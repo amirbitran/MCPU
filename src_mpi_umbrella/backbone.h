@@ -303,6 +303,11 @@ int  *Nnode, *Cnode;
 float delta_E, delta_T, delta_N, delta_all;
 float  *buf_in, *buf_out;
 
+/*Things defined by AB related to knowledge-based moves*/
+float CLUSTER_MOVE =0.33;  //originally 0.3333 
+float USE_CLUSTER = 0.0;       // 0.0 to turn knowledge based moves off, was 0.1 originally (knowledge moves on)
+int MAX_CLUSTERSTEP = 0;  //Added by AB...all MC steps after this will always have USE_CLUSTER set to 0
+
 
 /* includes */
 #include "protein_util.h"

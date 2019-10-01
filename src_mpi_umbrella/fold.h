@@ -135,8 +135,24 @@ void Fold(void) {
 
 
   /* main folding loop */
-
   for (mcstep=0; mcstep<MC_STEPS; mcstep++) {
+  
+  	/* AB: Turn off knowledge based moves at step MAX_CLUSTERSTEP */
+  	if (mcstep ==MAX_CLUSTERSTEP){
+  		USE_CLUSTER = 0;
+  		fprintf(STATUS, "At MC step %10ld, USE_CLUSTER was set to %5.3f \n", mcstep, USE_CLUSTER);
+  	}
+  	else if (mcstep == 0){
+  		fprintf(STATUS, "At MC step %10ld, USE_CLUSTER has value %5.3f \n", mcstep, USE_CLUSTER);
+  	}
+  	
+  	/*Print test by AB */
+  	//if (mcstep ==5) {
+  	//	fprintf(STATUS, "At MC step %10ld, USE_CLUSTER is set to %5.3f \n", mcstep, USE_CLUSTER);
+  	//}
+  	//else if (mcstep == 520000) {
+  	//	fprintf(STATUS, "At MC step %10ld, USE_CLUSTER is set to %5.3f \n", mcstep, USE_CLUSTER);
+  	//}
 
     /******** replica exchange ****************/
     if (mcstep % MC_REPLICA_STEPS == 0) {

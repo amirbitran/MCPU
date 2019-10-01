@@ -2,7 +2,7 @@
 
 #SBATCH -n 600
 #SBATCH -N 10
-#SBATCH -J 1igd_unfolding
+#SBATCH -J 1igd_ac
 #SBATCH -o 1igd_unfolding.out 
 #SBATCH -e 1igd_unfolding.err
 #SBATCH -p shakhnovich 
