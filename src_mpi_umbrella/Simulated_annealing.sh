@@ -2,7 +2,7 @@
 #Runs MCPU iteratively at gradually decreasing temperatures starting from some input file of the from protein_0.100_Emin.pdb
 
 #first input should be protein name (ex. FABG)
-#second input should be protein root in lower case (ex. fabg)
+#second input should be protein root used to name output files, typically in lower case (ex. fabg)
 
 
 #Assumes each temperature runs for 2 million MC steps

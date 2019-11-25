@@ -19,7 +19,7 @@ NOTE: At the moment, this code works for PDB files with up to 4000 atoms and 500
 	<PDB_ID>.sec_str
 To create the first two files, run save_triple.c (in the mcpu_prep directory): 
 	./save_triple <PDB_ID>
-with triple.energy, sct.energy, and <PDB_ID>.fasta in the directory.
+with triple.energy, sct.energy, and <PDB_ID>.fasta in the directory. This may take a few minutes to run.
 NOTE: It is important that the FASTA file have 80 characters per line
 
 Create <PDB_ID>.sec_str manually. File contains secondary structure assignment for each protein residue (see publication [1]).
@@ -102,16 +102,13 @@ ARO_WEIGHT -- relative orientations of aromatic residues
 If it is necessary to re-compile the code, one can do so from src_mpi_umbrella directory by simply typing ./compile (which runs the commands  gcc -c rng.c and mpicc -O3 -o fold_potential_mpi backbone.c -lm rng.o)
 
 To run:
-mpiexec -n <# of procs> ./fold_potential_mpi cfg
-	where each processor runs a simulation at a different temperature (32 temperatures were used in ref. [2] for DHFR unfolding)
+mpiexec -n <# of procs> ./fold_potential_mpi <cfg filename>	
+
+
 
 
 5. Data analysis
-Output PDB file names look like: file-prefix_temperature.MCstep
-One log file is output for each simulation temperature: file-prefix_temperature.log
-Each log file contains:
-total energy (energy), contact number (contact), and rmsd from native structure (rmsd)
-which can be used to obtain simulated melting curves (see publication [2]).
+A separate readme for data analysis method used in [5] and [6] is forthcoming
 
 
 Publications:
@@ -120,6 +117,7 @@ Publications:
 [3] J. Xu, L. Huang, E. I. Shakhnovich, Proteins 79, 1704 (2011)
 [4] W. Chen, J.S. Yang, E. I. Shakhnovich, Proteins 66, 682 (2007)
 [5] A. Bitran, W. M. Jacobs, X. Zhai, E. I Shakhnovich, in press
+[6]A. Bitran, W. M. Jacobs, I Shakhnovich, in press
 
 
 //end
