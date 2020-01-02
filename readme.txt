@@ -10,7 +10,18 @@ config_files - the directory with parameters
 
 
 
-NOTE: At the moment, this code works for PDB files with up to 4000 atoms and 500 residues. TO increase this, change the values for MAX_ATPMS and MAXSEQUENCE, respectively, in define.h and recompile
+
+
+Creates a grid of simulations with multiple temperatures. At each temperature, multiple cores can be run. If desired, umbrella sampling can be implemented such that a harmonic term with respect to native contacts is added to the energy of the form:
+
+U_umbrella = 1/2*K_BIAS*(N - S)^2 (Eq. 1)
+
+Where N is the number of native contacts for a proposed configuration, S is the set point, and K_BIAS is the spring constant. Umbrella biasing can also be turned off, in which case each core at a given temperature has the same conditions. There is also the option of implementing replica exchange, where a core can exchange with its neighbors in the grid along either the temperature and set point directions.
+
+
+
+
+NOTE: At the moment, this code works for PDB files with up to 8000 atoms and 1000 residues. TO increase this, change the values for MAX_ATPMS and MAXSEQUENCE, respectively, in define.h and recompile
 
 
 1. Create necessary input files: 
@@ -65,7 +76,7 @@ Place input files, along with the pdb file, in the directory sim/DHFR/files/
 									Umbrella parameters
 
 	UMBRELLA--indicates whether or not umbrella sampling is to be used. 1 if so, 0 if not. All subsequent parameters in this section are moot if set to 0
-	K_BIAS -- Spring constant for umbrella biasing
+	K_BIAS -- Spring constant for umbrella biasing. See equation (Eq. 1) above
 	NUMBER_OF_CONTACTS_MAX	-- Highest set point to be used in umbrella biasing
 	CONTACTS_STEP -- Separation between set points. These parameters set up a simulation grid with nodes_per_temp cores at each temperature, whose set points range from NUMBER_OF_CONTACTS_MAX and descending in increments of CONTACTS_STEP
 	MIN_SEQ_SEP -- Minimum separation in sequence between residues for pairs of residues in the native PDB file to define a contact. Setting to values above 4 ensures that short range contacts in alpha helices are not included in contacts definition.

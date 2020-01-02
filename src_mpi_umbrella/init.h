@@ -1388,6 +1388,12 @@ void SetProgramOptions(int argc, char *argv[]) {
 	NON_SPECIFIC_ENERGY = value;         
       else if (!strcmp(token, "USE_GLOBAL_BB_MOVES"))
 	USE_GLOBAL_BB_MOVES = value;
+	  else if (!strcmp(token, "CONSTRAINT_FILE")){ //AB
+	sscanf(line, "%*s %s", name);
+	strcpy(constraint_file, name);
+	}
+	  else if (!strcmp(token, "K_CONSTRAINT")) //AB
+	k_constraint = value;
       else if (!strcmp(token, "YANG_MOVE"))
        {
 	YANG_MOVE = value;
@@ -1609,6 +1615,15 @@ void SetProgramOptions(int argc, char *argv[]) {
   MATRIX_SIZE = 20;
   HALF_MATRIX_SIZE = MATRIX_SIZE/2;
 
+
+	/*Read the constraints--AB*/
+   if (strcmp(constraint_file, "None")!=0 ){
+   fprintf(STATUS, "There are constraints to read!\n");
+   fflush(STATUS);
+   Read_constraints();
+   fprintf(STATUS, "Constraints read\n");
+   fflush(STATUS);
+   }
 
   return;
 

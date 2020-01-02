@@ -1,0 +1,36 @@
+How is energy dealt with in MCPU?
+
+								Initialization:
+At the beginning of the simulation, fold() in fold.h is called, which in turn calls 
+reset_energies() in energy.h. This function sets the values for E and prev_E, which 
+ironically are actually the current energies at the moment (i.e. equivalent to the E 
+values)
+At this point, the E_min values are also set as the prev_E values (since we have only 
+sampled one configuration, by definition it is the minimum energy value)
+
+
+
+									Fold loop
+Replica exchange: When replica exchange happens at the beginning of an MC step, the E
+values for all cores are gathered and used to determine whether exchange is accepted
+If an exchange does occur, then the function reset_energies is used to recompute E and
+prev_E
+
+
+Regular move: A regular move is implemented by the function MakeMove in move.h (which
+is called by fold.h every step) AFTER any
+replica exchange may have occured. At the beginning of each move, the values for E and
+prev_E will be the same. We then define variables dE which are obtained by computing a 
+new energy for the proposed configuration, minus the prev_E values. This dE is used to  
+determine whether the move is accepted. If so, then the function Update is called, which
+increments the energy values by dE and then sets the prev_E values equal to the E values
+If the move is rejected, then the function Restore is called, which sets all the E values
+equal to the prev_E values (actually I'm not clear that this is necessary since the E 
+values would have never been changed in this case?)
+Every once in a while, in fold.h will print the current energy values. To do this, it
+computes the current values and names these as Epot_now, etc...but I am not clear why it 
+does this rather than just using the stored value for Epot?
+Finally, if the current value of E is lower than any that has been sampled before 
+(i.e. Emin), then the Emin values are updated with the current values for E. 
+Likewise for RMSD
+
