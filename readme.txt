@@ -36,15 +36,13 @@ NOTE: It is important that the FASTA file have 80 characters per line
 Create <PDB_ID>.sec_str manually. File contains secondary structure assignment for each protein residue (see publication [1]).
 first line: use input secondary structure? (9/0 = yes/no)
 second line: secondary structure type (H/E/C = helix/sheet/coil)
+For most applications, the first line is entirely 0's (no input secondary structure) and the second line is set to entirely C's 
 
 Place input files, along with the pdb file, in the directory sim/DHFR/files/
 (currently contains sample input files for DHFR)
 
 
-2. Edit path and configuration options. 
-- Change all instances of /PATHNAME/ to directory containing the MCPU folder, in configuration file /src_mpi/cfg and in src_mpi/backbone.c.
-	Set output directory (PDB_OUT_FILE in cfg and line 9 in backbone.c, in the form /directory/file-prefix)
-- Edit configuration options in cfg. The most relevant options (without changing the potential) are:
+2. Edit configuration options in cfg file. The most relevant options (without changing the potential) are:
 
 									NATIVE PROTEIN DATA
 	NATIVE_DIRECTORY -- Contains a set of PDB files that will be used to initialize simulation for each respective core. The PDB files in this directory should be named 0.pdb, 1.pdb, 2.pdb, etc., and the ith core will initialized with PDB file i.pdb. If you wish to initialize all cores with the same input file, set this option to None, and simply edit NATIVE_FILE and STRUCTURE_FILE below 
@@ -68,7 +66,7 @@ Place input files, along with the pdb file, in the directory sim/DHFR/files/
 	USE_CLUSTER -- Gives the frequency at which knowledge-based moves are attempted, given that the function LoopBackboneMove has been called to make a move (see [4] for description of knowledge-based moves). The function LoopBackboneMove is only called with probability 0.33, so the overall chance of attempting a knowledge move is 0.33*USE_CLUSTER. At MC steps above MAX_CLUSTERSTEP (see below), this value is automatically set to 0 and knowledge-based moves are no longer used.
 		NOTE: Knowledge-based moves violate detailed balance and thus, steps that incorporate them should not be used to compute thermodynamic properties. But these moves may nonetheless be useful to incorporate at the beginning of a simulation to help the simulation find energy minima at intermediate numbers of native contacts (as in [5])
 		NOTE: At the moment, if the secondary structure file has any helices (H characters), then the value in the cfg file will be ignored and USE_CLUSTER will be set to 0.5 by default. This can be changed if desired by modifying the function LoopBackboneMove (in Move.h) and recompiling.
-	MAX_CLUSTERSTEP -- Largest step at which knowledge-based moves (see [4]) are to be used. For all MC steps beyond this, these moves will be turned off.As above, this requires the secondary structure file to have no H characters.
+	MAX_CLUSTERSTEP -- Largest step at which knowledge-based moves (see [4]) are to be used. For all MC steps beyond this, these moves will be turned off. As above, this requires the secondary structure file to have no H characters.
 	
 
 
@@ -94,10 +92,7 @@ Place input files, along with the pdb file, in the directory sim/DHFR/files/
 		- SECONDARY_STRUCTURE_FILE is <PDB_ID>.sec_str
 	
 			
-- Edit temperature range if necessary 
-	Set minimum temperature: backbone.c, line 14. 
-	Currently set so that each processor runs a simulation at a temperature 0.1 units higher than the previous.
-	To use a different temperature range, change both backbone.c (line 27) and init.h (function SetProgramOptions, line 52). 
+
 
 
 3. Additional parameters related to the energy function can be modified in define.h if desired, but this will require the program to be recompiled.
