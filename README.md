@@ -1,17 +1,29 @@
 # MCPU
 //start	
 
-MCPU - Monte-Carlo protein simulation program
+MCPU - Monte-Carlo protein simulation program. Creates and runs a grid of Monte-Carlo
+simulations based on PDB files for a single-chain protein with no hydrogen atoms. The
+simulation grid has two axes--namely simulation temperature T and umbrella setpoint s.
+This setpoint biases the protein to explore configurations with a native contacts value
+close to s by adding a term to the potential function given by
+
+	E_umbrella = 1/2*K_BIAS*(N(**x**) - s)^2 (Eq. 1)
+
+Where N is the number of native contacts in the current protein configuration x,
+and 
 
 
 					Directories
 											
-mcpu_prep - the directory containing the code to create input files
-sim - the directory with files prepared for simulations of any specific protein. This is 
+1. mcpu_prep - the directory containing the code to create input files
+
+2. sim - the directory with files prepared for simulations of any specific protein. This is 
 also where output is stored
-src_mpi_umbrella - the directory with source code
-src_mpi_umbrella/cfg - the configuration file
-config_files - the directory with parameters
+
+3. src_mpi_umbrella - the directory with source code. Contains configuration files
+src_mpi_umbrella/cfg 
+
+4. config_files - the directory with parameters
 
 
 
@@ -22,7 +34,6 @@ At each temperature, multiple cores can be run. If desired, umbrella sampling ca
 implemented such that a harmonic term with respect to native contacts is added to the 
 energy of the form:
 
-U_umbrella = 1/2*K_BIAS*(N - S)^2 (Eq. 1)
 
 Where N is the number of native contacts for a proposed configuration, S is the set point,
 and K_BIAS is the spring constant. Umbrella biasing can also be turned off, in which case
