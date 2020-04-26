@@ -3,8 +3,11 @@
 
 MCPU - Monte-Carlo protein simulation program
 
+
+# Directories
 mcpu_prep - the directory containing the code to create input files
-sim - the directory with files prepared for simulations of any specific protein. This is also where output is stored
+sim - the directory with files prepared for simulations of any specific protein. This is 
+also where output is stored
 src_mpi_umbrella - the directory with source code
 src_mpi_umbrella/cfg - the configuration file
 config_files - the directory with parameters
@@ -13,16 +16,25 @@ config_files - the directory with parameters
 
 
 
-Creates a grid of simulations with multiple temperatures. At each temperature, multiple cores can be run. If desired, umbrella sampling can be implemented such that a harmonic term with respect to native contacts is added to the energy of the form:
+Creates a grid of simulations with multiple temperatures. 
+At each temperature, multiple cores can be run. If desired, umbrella sampling can be 
+implemented such that a harmonic term with respect to native contacts is added to the 
+energy of the form:
 
 U_umbrella = 1/2*K_BIAS*(N - S)^2 (Eq. 1)
 
-Where N is the number of native contacts for a proposed configuration, S is the set point, and K_BIAS is the spring constant. Umbrella biasing can also be turned off, in which case each core at a given temperature has the same conditions. There is also the option of implementing replica exchange, where a core can exchange with its neighbors in the grid along either the temperature and set point directions.
+Where N is the number of native contacts for a proposed configuration, S is the set point,
+and K_BIAS is the spring constant. Umbrella biasing can also be turned off, in which case
+each core at a given temperature has the same conditions. There is also the option of
+implementing replica exchange, where a core can exchange with its neighbors in the grid 
+ along either the temperature and set point directions.
 
 
 
 
-NOTE: At the moment, this code works for PDB files with up to 8000 atoms and 1000 residues. To increase this, change the values for MAX_ATPMS and MAXSEQUENCE, respectively, in define.h and recompile
+NOTE: At the moment, this code works for PDB files with up to 8000 atoms and 
+1000 residues. To increase this, change the values for MAX_ATPMS and MAXSEQUENCE, 
+respectively, in define.h and recompile
 
 
 1. Create necessary input files: 
