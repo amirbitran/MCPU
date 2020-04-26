@@ -1,17 +1,41 @@
 # MCPU
 //start	
 
-MCPU - Monte-Carlo protein simulation program. Creates and runs a grid of Monte-Carlo
-simulations based on PDB files for a single-chain protein with no hydrogen atoms. The
-simulation grid has two axes--namely simulation temperature T and umbrella setpoint s.
-This setpoint biases the protein to explore configurations with a native contacts value
-close to s by adding a term to the potential function given by
+MCPU - Monte-Carlo protein simulation program. Creates and runs a grid of parallel 
+Monte-Carlosimulations based on PDB files for a single-chain protein with no hydrogen 
+atoms. Thesimulation grid has two axes--namely simulation temperature T and umbrella
+setpoint s. This setpoint biases the protein to explore configurations with a native 
+contacts value close to s by adding a term to the potential function given by
 
-	E_umbrella = 1/2*K_BIAS*(N(**x**) - s)^2 (Eq. 1)
+	E_umbrella = 1/2*k_bias*(N(x) - s)^2 (Eq. 1)
 
-Where N is the number of native contacts in the current protein configuration x,
-and 
+Where N(x) is the number of native contacts in the current protein configuration x,
+and k_bias is the biasing spring constant, which can be set to 0 if no umbrella biasing
+is desired (e.g. in unfolding simulations). A sample grid with setpoints ranging from
+100 to 60 in steps of contact_step = 10 and temperatures ranging from T = 0.4 to T=0.6
+in steps of temp_step =0.05 is depicted below--each X indicates that a simulation
+is run with that given pair of temperature and setpoint conditions.
 
+
+				s=100	s=90	s=80	s=70	s=60
+
+T = 0.6			 X		 X		 X		 X        X
+
+T = 0.55	     X		 X		 X		 X        X
+
+T 0.5            X		 X		 X		 X        X
+
+T = 0.45         X		 X		 X		 X        X
+
+T = 0.4          X		 X		 X		 X        X
+
+
+There is also the option of implementing replica exchange, where a core can exchange with 
+its neighbors in the grid along either the temperature and set point directions.
+
+NOTE: At the moment, this code works for PDB files with up to 8000 atoms and 
+1000 residues. To increase this, change the values for MAX_ATPMS and MAXSEQUENCE, 
+respectively, in define.h and recompile
 
 					Directories
 											
@@ -28,31 +52,14 @@ src_mpi_umbrella/cfg
 
 
 
-
-Creates a grid of simulations with multiple temperatures. 
-At each temperature, multiple cores can be run. If desired, umbrella sampling can be 
-implemented such that a harmonic term with respect to native contacts is added to the 
-energy of the form:
-
-
-Where N is the number of native contacts for a proposed configuration, S is the set point,
-and K_BIAS is the spring constant. Umbrella biasing can also be turned off, in which case
-each core at a given temperature has the same conditions. There is also the option of
-implementing replica exchange, where a core can exchange with its neighbors in the grid 
- along either the temperature and set point directions.
-
-
-
-
-NOTE: At the moment, this code works for PDB files with up to 8000 atoms and 
-1000 residues. To increase this, change the values for MAX_ATPMS and MAXSEQUENCE, 
-respectively, in define.h and recompile
+					Steps in implementation
 
 
 1. Create necessary input files: 
 	<PDB_ID>.triple
 	<PDB_ID>.sctorsion
 	<PDB_ID>.sec_str
+
 To create the first two files, run save_triple.c (in the mcpu_prep directory): 
 	./save_triple <PDB_ID>
 with triple.energy, sct.energy, and <PDB_ID>.fasta in the directory. This may take a few minutes to run.
@@ -69,22 +76,25 @@ Place input files, along with the pdb file, in the directory sim/DHFR/files/
 
 2. Edit configuration options in cfg file. The most relevant options (without changing the potential) are:
 
-									NATIVE PROTEIN DATA
+					NATIVE PROTEIN DATA				
 	NATIVE_DIRECTORY -- Contains a set of PDB files that will be used to initialize simulation for each respective core. The PDB files in this directory should be named 0.pdb, 1.pdb, 2.pdb, etc., and the ith core will initialized with PDB file i.pdb. If you wish to initialize all cores with the same input file, set this option to None, and simply edit NATIVE_FILE and STRUCTURE_FILE below 
+	
 	NATIVE_FILE and STRUCTURE_FILE -- input PDB file for simulations (folded structure, single chain, no hydrogens). Even if the NATIVE_DIRECTORY option above is set to something other than None, these options should still be specified to allow for RMSD computation
+	
 	PDB_OUT_FILE -- path to simulation output. Should be formatted as {path to output directory}/{protein name}, such that all simulation output will be saved in {path to output directory} and the output files will all incorporate {protein name} in their name.
 									
-									MONTE-CARLO PARAMETERS
-
+					MONTE-CARLO PARAMETERS
 	MC_STEPS -- length of the simulation
+	
 	MC_PDB_PRINT_STEPS -- frequency of outputting coordinates to a pdb file
+	
 	MC_PRINT_STEPS -- frequency of outputting energies to log file
 
-									Replica Exchange Parameter
+					Replica Exchange Parameter
 	MC_REPLICA_STEPS -- frequency of replica exchange. To turn off exchange, set to a value greater than MC_STEPS.
 
 
-									SIMULATION PARAMETERS
+					SIMULATION PARAMETERS
 	MC_TEMP_MIN -- Lowest simulation temperature in grid
 	TEMP_STEP -- Spacing between successive temperatures in grid
 	NODES_PER_TEMP -- How many cores are assigned to each temperature
@@ -96,7 +106,7 @@ Place input files, along with the pdb file, in the directory sim/DHFR/files/
 
 
 
-									Umbrella parameters
+					 Umbrella parameters
 
 	UMBRELLA--indicates whether or not umbrella sampling is to be used. 1 if so, 0 if not. All subsequent parameters in this section are moot if set to 0
 	K_BIAS -- Spring constant for umbrella biasing. See equation (Eq. 1) above
