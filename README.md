@@ -4,7 +4,8 @@
 MCPU - Monte-Carlo protein simulation program
 
 
-# Directories
+											Directories
+											
 mcpu_prep - the directory containing the code to create input files
 sim - the directory with files prepared for simulations of any specific protein. This is 
 also where output is stored
