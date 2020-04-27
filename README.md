@@ -88,7 +88,10 @@ potential) are:
 	
 	MC_PDB_PRINT_STEPS -- frequency of outputting coordinates to a pdb file
 	
-	MC_PRINT_STEPS -- frequency of outputting energies to log file
+	MC_PRINT_STEPS -- frequency of outputting info to log file
+	IMPORTANT!!!: The dbfold analysis package assumes that MC_PRINT_STEPS and 
+	MC_PDB_PRINT_STEPS are set to the same value
+	
 
 					Replica Exchange Parameter
 	MC_REPLICA_STEPS -- frequency of replica exchange. To turn off exchange, set to a 
